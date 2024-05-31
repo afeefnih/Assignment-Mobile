@@ -56,64 +56,80 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Profile'),
+        title: Text('Update Profile'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              TextFormField(
-                controller: _nameController,
-                decoration: InputDecoration(labelText: 'Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your name';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  // Add additional email validation if needed
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _phoneController,
-                decoration: InputDecoration(labelText: 'Phone'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your phone number';
-                  }
-                  // Add additional phone validation if needed
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Password'),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  // Add additional password validation if needed
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _updateProfile,
-                child: Text('Update Profile'),
-              ),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF4CAF50),
+              Color(0xFF8BC34A),
+              Color(0xFFCDDC39),
             ],
+            stops: [0.1, 0.5, 0.9],
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
+                TextFormField(
+                  controller: _nameController,
+                  decoration: InputDecoration(prefixIcon: Icon(Icons.person), labelText: 'Name'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your name';
+                    }
+                    return null;
+                  },
+                ),const SizedBox(height: 20),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: InputDecoration(prefixIcon: Icon(Icons.email), labelText: 'Email'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    }
+                    // Add additional email validation if needed
+                    return null;
+                  },
+                ),const SizedBox(height: 20),
+                TextFormField(
+                  controller: _phoneController,
+                  decoration: InputDecoration(prefixIcon: Icon(Icons.phone), labelText: 'Phone'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your phone number';
+                    }
+                    // Add additional phone validation if needed
+                    return null;
+                  },
+                ),const SizedBox(height: 20),
+                TextFormField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(prefixIcon: Icon(Icons.lock), labelText: 'Password'),
+                  obscureText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your password';
+                    }
+                    // Add additional password validation if needed
+                    return null;
+                  },
+                ),const SizedBox(height: 20),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _updateProfile,
+                  child: Text('Update Profile'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

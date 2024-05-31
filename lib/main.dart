@@ -3,7 +3,7 @@ import 'views/login.dart';
 import 'views/register.dart';
 import 'booking_page_2.dart';
 import 'views/welcome.dart';
-import 'views/user_tab.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {

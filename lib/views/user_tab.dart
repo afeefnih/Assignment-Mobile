@@ -1,26 +1,32 @@
+import 'package:assignment1/models/userId.dart';
 import 'package:flutter/material.dart';
+import '/booking_page_2.dart';
+import '/views/profile.dart';
+
+
 
 class TabView extends StatefulWidget {
   const TabView({super.key});
-final String title = "Flutter Bottom Tab demo";
+  final String title = "Flutter Bottom Tab demo";
+
   @override
   State<TabView> createState() => _TabViewState();
 }
 
 class _TabViewState extends State<TabView> {
-  
-int currentTabIndex = 0;
+
+  int currentTabIndex = 0;
   List<Widget> tabs = [
-    TabScreen(Colors.green),
-    TabScreen(Colors.orange),
-    TabScreen(Colors.blue)
+    const BookingPage2(),
+    Container(color: Colors.green),
+    ProfileTab()
   ];
   onTapped(int index) {
     setState(() {
       currentTabIndex = index;
     });
   }
- 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,19 +49,6 @@ int currentTabIndex = 0;
           )
         ],
       ),
-    );
-  }
-}
-
-class TabScreen extends StatelessWidget {
-  final Color color;
-  TabScreen(this.color);
- 
-  @override
-  Widget build(BuildContext context) {
-    return 
-    Container(
-      color: color,
     );
   }
 }
