@@ -282,11 +282,6 @@ class _BookingPage1State extends State<BookingPage1> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.brown),
-                      foregroundColor: MaterialStateProperty.all(Colors.white),
-                      padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
-                    ),
                     onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {
                       // Calculate the number of days
