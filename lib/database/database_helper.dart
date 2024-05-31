@@ -62,6 +62,21 @@ class DatabaseHelper {
       )
     ''');
   }
+
+  Future<Map<String, dynamic>?> getUserById(int userid) async {
+    Database db = await instance.database;
+    List<Map<String, dynamic>> results = await db.query(
+      tableUsers,
+      where: 'userid = ?',
+      whereArgs: [userid]
+    );
+
+    if (results.isNotEmpty) {
+      return results.first;
+    } else {
+      return null;
+    }
+  }
   
   
 }

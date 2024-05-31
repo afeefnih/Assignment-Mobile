@@ -6,9 +6,9 @@ import '/views/profile.dart';
 
 
 class TabView extends StatefulWidget {
-  const TabView({super.key});
+  const TabView({super.key, required this.id});
   final String title = "Flutter Bottom Tab demo";
-
+  final int id;
   @override
   State<TabView> createState() => _TabViewState();
 }
@@ -16,11 +16,17 @@ class TabView extends StatefulWidget {
 class _TabViewState extends State<TabView> {
 
   int currentTabIndex = 0;
-  List<Widget> tabs = [
-    const BookingPage2(),
-    Container(color: Colors.green),
-    ProfileTab()
-  ];
+  late List<Widget> tabs;
+
+  @override
+  void initState() {
+    super.initState();
+    tabs = [
+      const BookingPage2(),
+      Container(color: Colors.green),
+      ProfileTab(id: widget.id),
+    ];
+  }
   onTapped(int index) {
     setState(() {
       currentTabIndex = index;
