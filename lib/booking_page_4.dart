@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
-
-
+import 'main.dart';
 
 class BookingPage4 extends StatefulWidget {
   const BookingPage4({super.key});
@@ -45,6 +43,9 @@ class _BookingPage4State extends State<BookingPage4> {
           );
         },
       );
+
+      // Show confetti animation
+      _showConfettiAnimation();
     } else {
       // Show a snackbar with a friendly message
       ScaffoldMessenger.of(context).showSnackBar(
@@ -65,18 +66,30 @@ class _BookingPage4State extends State<BookingPage4> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Rating'),
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Image.asset('assets/icon.jpg'),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+          },
+        ),
       ),
       body: Container(
+        width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
-          // Add a calm background color
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.blue[200]!,
-              Colors.white,
+              Color(0xFF4CAF50),
+              Color(0xFF8BC34A),
+              Color(0xFFCDDC39),
             ],
+            stops: [0.1, 0.5, 0.9],
           ),
         ),
         child: SingleChildScrollView(
@@ -132,6 +145,11 @@ class _BookingPage4State extends State<BookingPage4> {
                       ),
                       const SizedBox(height: 10),
                       ElevatedButton(
+                        style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.brown),
+                      foregroundColor: MaterialStateProperty.all(Colors.white),
+                      padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
+                    ),
                         onPressed: _submitReview,
                         child: const Text('Submit Review'),
                       ),
