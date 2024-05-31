@@ -1,8 +1,9 @@
+import 'RegisteredUserPage.dart';
 import 'database_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart'; // Import sq
-import 'register_page.dart'; // Import RegisterPage
-import 'booking_page_1.dart'; // Import BookingPage1
+import 'package:sqflite/sqflite.dart';
+import 'register_page.dart';
+import 'booking_page_1.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class _LoginPageState extends State<LoginPage> {
       Database db = await DatabaseHelper.instance.database;
       List<Map<String, dynamic>> result = await db.query(
         DatabaseHelper.tableUsers,
-        where: 'username = ? AND password = ?',
+        where: 'username =? AND password =?',
         whereArgs: [_usernameController.text, _passwordController.text],
       );
 
@@ -30,10 +31,20 @@ class _LoginPageState extends State<LoginPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login Successful')),
         );
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => BookingPage1()), // Navigate to BookingPage1
-        );
+
+        // Check the username and navigate to the corresponding page
+        String username = _usernameController.text;
+        if (username == 'admin') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => RegisteredUsersPage()),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => BookingPage1()),
+          );
+        }
       } else {
         if (!mounted) return; // Ensure the widget is still mounted
         ScaffoldMessenger.of(context).showSnackBar(
@@ -90,7 +101,6 @@ class _LoginPageState extends State<LoginPage> {
                 },
                 child: const Text('Register Now'),
               ),
-              
             ],
           ),
         ),
