@@ -4,21 +4,6 @@ import 'booking_page_2.dart';
 import 'package:flutter/material.dart';
 import 'user.dart'; // Import the User class
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Homestay Booking',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: HomePage(),
-    );
-  }
-}
-
 class HomePage extends StatelessWidget {
   final User? user;
 

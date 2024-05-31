@@ -1,7 +1,7 @@
 import 'user.dart';
 import 'homestay.dart';
 import 'login_page.dart';
-import 'booking_page_3.dart';
+import 'booking_page_1.dart';
 import 'package:flutter/material.dart';
 
 class BookingPage2 extends StatelessWidget {
@@ -83,63 +83,25 @@ class BookingPage2 extends StatelessWidget {
     );
   }
 
-  void _showPackageDetails(BuildContext context, Homestay homestay) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: double.infinity,
-                height: 200,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  image: DecorationImage(
-                    image: AssetImage(homestay.imagePath),
-                    fit: BoxFit.cover,
-                  ),
+void _showPackageDetails(BuildContext context, Homestay homestay) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        // AlertDialog content
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context); // Close dialog
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BookingPage1(selectedPackage: homestay),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Text(
-                  homestay.label,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                ),
-              ),
-              Text(homestay.detail),
-              Text("Based price: RM ${homestay.price.toStringAsFixed(2)}/day"),
-            ],
+              );
+            },
+            child: Text('Choose'),
           ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                if (user != null) {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => BookingPage3(
-                        // Data as arguments to send to the next page.
-                        user: user!,
-                        price: homestay.price,
-                      ),
-                    ),
-                  );
-                } else {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
-                  );
-                }
-              },
-              child: Text('Choose'),
-            ),
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
