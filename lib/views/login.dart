@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart'; // Import sq
 import 'register.dart'; // Import RegisterPage
-import '../booking_page_1.dart'; // Import BookingPage1
 import '../database/database_helper.dart';
+import 'user_tab.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => BookingPage1()), // Navigate to BookingPage1
+              builder: (context) => TabView()), // Navigate to BookingPage1
         );
       } else {
         if (!mounted) return; // Ensure the widget is still mounted
