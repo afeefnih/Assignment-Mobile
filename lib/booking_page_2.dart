@@ -3,6 +3,7 @@ import 'homestay.dart';
 import 'login_page.dart';
 import 'booking_page_3.dart';
 import 'package:flutter/material.dart';
+import 'main.dart';
 
 class BookingPage2 extends StatelessWidget {
   final User? user;
@@ -14,16 +15,30 @@ class BookingPage2 extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Homestay Details'),
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Image.asset('assets/icon.jpg'),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+          },
+        ),
       ),
       body: Container(
+        width: double.infinity,
+        height: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.blue[200]!,
-              Colors.white,
+              Color(0xFF4CAF50),
+              Color(0xFF8BC34A),
+              Color(0xFFCDDC39),
             ],
+            stops: [0.1, 0.5, 0.9],
           ),
         ),
         child: Padding(
@@ -75,7 +90,7 @@ class BookingPage2 extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               homestay.label,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -108,7 +123,7 @@ class BookingPage2 extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(
                   homestay.label,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
               ),
               Text(homestay.detail),
@@ -117,6 +132,7 @@ class BookingPage2 extends StatelessWidget {
           ),
           actions: [
             ElevatedButton(
+              style: buttonStyle,
               onPressed: () {
                 if (user != null) {
                   Navigator.pop(context);
@@ -141,6 +157,7 @@ class BookingPage2 extends StatelessWidget {
               child: Text('Choose'),
             ),
             ElevatedButton(
+              style: buttonStyle,
               onPressed: () {
                 Navigator.pop(context);
               },
