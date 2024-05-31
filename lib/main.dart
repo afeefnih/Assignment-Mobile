@@ -1,20 +1,40 @@
 import 'package:flutter/material.dart';
-import 'login_page.dart';
-import 'register_page.dart';
+import 'views/login.dart';
+import 'views/register.dart';
 import 'booking_page_2.dart';
-
+import 'views/welcome.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final outlineInputBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(20),
+      borderSide: BorderSide.none,
+    );
     return MaterialApp(
       title: 'Homestay Booking',
       theme: ThemeData(
         primarySwatch: Colors.green,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(255, 88, 57, 45),
+              foregroundColor: Colors.white,
+              textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 13)),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          floatingLabelBehavior: FloatingLabelBehavior.never,
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+          filled: true,
+          iconColor: Colors.black,
+          fillColor: Colors.white,
+          border: outlineInputBorder,
+        ),
       ),
-      home: HomePage(),
+      home: Welcome(),
     );
   }
 }
@@ -31,7 +51,8 @@ class HomePage extends StatelessWidget {
     final buttonStyle = ButtonStyle(
       backgroundColor: MaterialStateProperty.all(Colors.brown),
       foregroundColor: MaterialStateProperty.all(Colors.white),
-      padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
+      padding: MaterialStateProperty.all(
+          EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
     );
 
     return Scaffold(
@@ -74,7 +95,9 @@ class HomePage extends StatelessWidget {
                 style: textStyle,
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 40), // Use the const keyword for widgets that don't change
+              const SizedBox(
+                  height:
+                      40), // Use the const keyword for widgets that don't change
               ElevatedButton(
                 style: buttonStyle,
                 onPressed: () {

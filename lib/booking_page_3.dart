@@ -1,4 +1,4 @@
-import 'user.dart';
+import 'models/user.dart';
 import 'booking_page_4.dart';
 import 'package:flutter/material.dart';
 

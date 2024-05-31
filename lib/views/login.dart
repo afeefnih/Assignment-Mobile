@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart'; // Import sq
-import 'register_page.dart'; // Import RegisterPage
-import 'booking_page_1.dart'; // Import BookingPage1
-import 'main.dart'; // Import icon.jpg
-import 'database_helper.dart';
+import 'register.dart'; // Import RegisterPage
+import '../booking_page_1.dart'; // Import BookingPage1
+import '../database/database_helper.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -33,7 +32,8 @@ class _LoginPageState extends State<LoginPage> {
         );
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => BookingPage1()), // Navigate to BookingPage1
+          MaterialPageRoute(
+              builder: (context) => BookingPage1()), // Navigate to BookingPage1
         );
       } else {
         if (!mounted) return; // Ensure the widget is still mounted
@@ -53,10 +53,7 @@ class _LoginPageState extends State<LoginPage> {
         leading: IconButton(
           icon: Image.asset('assets/icon.jpg'),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            );
+            Navigator.pop(context);
           },
         ),
       ),
@@ -76,14 +73,17 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(25.0),
           child: Form(
             key: _formKey,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 TextFormField(
                   controller: _usernameController,
-                  decoration: const InputDecoration(labelText: 'Username'),
+                  decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.person), labelText: 'Username'),
                   style: TextStyle(fontWeight: FontWeight.bold),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -92,9 +92,11 @@ class _LoginPageState extends State<LoginPage> {
                     return null;
                   },
                 ),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _passwordController,
-                  decoration: const InputDecoration(labelText: 'Password'),
+                  decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.lock), labelText: 'Password'),
                   obscureText: true,
                   style: TextStyle(fontWeight: FontWeight.bold),
                   validator: (value) {
@@ -106,21 +108,26 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  style: buttonStyle,
                   onPressed: _login,
                   child: const Text('Login'),
                 ),
-                ElevatedButton(
-                  style: buttonStyle,
-                  onPressed: () {
+                const SizedBox(height: 20),
+                GestureDetector(
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => RegisterPage()),
                     );
                   },
-                  child: const Text('Register Now'),
+                  child: Text(
+                    'Dont have account? Register Now',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: const Color.fromARGB(255, 88, 57, 45),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-                
               ],
             ),
           ),
@@ -133,5 +140,6 @@ class _LoginPageState extends State<LoginPage> {
 final buttonStyle = ButtonStyle(
   backgroundColor: MaterialStateProperty.all(Colors.brown),
   foregroundColor: MaterialStateProperty.all(Colors.white),
-  padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
+  padding: MaterialStateProperty.all(
+      EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
 );

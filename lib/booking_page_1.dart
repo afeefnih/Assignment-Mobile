@@ -1,4 +1,4 @@
-import 'user.dart';
+import 'models/user.dart';
 import 'main.dart';
 import 'package:flutter/material.dart';
 import 'booking_page_2.dart'; // Import BookingPage2

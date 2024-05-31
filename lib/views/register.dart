@@ -1,7 +1,7 @@
-import 'database_helper.dart';
+import '../database/database_helper.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
-import 'main.dart';
+import '../main.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -42,10 +42,7 @@ class _RegisterPageState extends State<RegisterPage> {
         leading: IconButton(
           icon: Image.asset('assets/icon.jpg'),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            );
+            Navigator.pop(context);
           },
         ),
       ),
@@ -65,14 +62,17 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(25.0),
           child: Form(
             key: _formKey,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 TextFormField(
                   controller: _nameController,
-                  decoration: InputDecoration(labelText: 'Name'),
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.person), labelText: 'Name'),
                   style: TextStyle(fontWeight: FontWeight.bold),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -81,9 +81,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     return null;
                   },
                 ),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _emailController,
-                  decoration: InputDecoration(labelText: 'Email'),
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.email), labelText: 'Email'),
                   style: TextStyle(fontWeight: FontWeight.bold),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -92,9 +94,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     return null;
                   },
                 ),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _phoneController,
-                  decoration: InputDecoration(labelText: 'Phone Number'),
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.phone), labelText: 'Phone Number'),
                   keyboardType: TextInputType.phone,
                   style: TextStyle(fontWeight: FontWeight.bold),
                   validator: (value) {
@@ -104,9 +108,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     return null;
                   },
                 ),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _usernameController,
-                  decoration: InputDecoration(labelText: 'Username'),
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.person), labelText: 'Username'),
                   style: TextStyle(fontWeight: FontWeight.bold),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -115,9 +121,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     return null;
                   },
                 ),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _passwordController,
-                  decoration: InputDecoration(labelText: 'Password'),
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.lock), labelText: 'Password'),
                   obscureText: true,
                   style: TextStyle(fontWeight: FontWeight.bold),
                   validator: (value) {
@@ -129,7 +137,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
-                  style: buttonStyle,
                   onPressed: _register,
                   child: Text('Register'),
                 ),
@@ -145,5 +152,6 @@ class _RegisterPageState extends State<RegisterPage> {
 final buttonStyle = ButtonStyle(
   backgroundColor: MaterialStateProperty.all(Colors.brown),
   foregroundColor: MaterialStateProperty.all(Colors.white),
-  padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
+  padding: MaterialStateProperty.all(
+      EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
 );

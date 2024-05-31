@@ -1,6 +1,6 @@
-import 'user.dart';
-import 'homestay.dart';
-import 'login_page.dart';
+import 'models/user.dart';
+import 'models/homestay.dart';
+import 'views/login.dart';
 import 'booking_page_3.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
