@@ -2,7 +2,7 @@ import 'database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart'; // Import sq
 import 'register_page.dart'; // Import RegisterPage
-import 'booking_page_2.dart'; // Import BookingPage1
+import 'booking_page_1.dart'; // Import BookingPage1
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -30,13 +30,10 @@ class _LoginPageState extends State<LoginPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login Successful')),
         );
-       // Inside _login method in LoginPage.dart
-
-Navigator.pushReplacement(
-  context,
-  MaterialPageRoute(builder: (context) => BookingPage2()),
-);
-
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => BookingPage1()), // Navigate to BookingPage1
+        );
       } else {
         if (!mounted) return; // Ensure the widget is still mounted
         ScaffoldMessenger.of(context).showSnackBar(

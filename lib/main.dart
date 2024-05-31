@@ -2,7 +2,6 @@ import 'login_page.dart';
 import 'register_page.dart';
 import 'booking_page_2.dart';
 import 'package:flutter/material.dart';
-import 'user.dart'; // Import the User class
 
 void main() => runApp(MyApp());
 
@@ -20,14 +19,10 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatelessWidget {
-  final User? user;
-
-  HomePage({this.user});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.blue, // Set background color to blue
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -35,13 +30,13 @@ class HomePage extends StatelessWidget {
             Text(
               'Homestay Booking System',
               style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+                fontSize: 32, // Adjust font size to your preference
+                fontWeight: FontWeight.bold, // Apply bold style
+                color: Colors.white, // Set text color to white
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 40),
+            SizedBox(height: 40), // Add some space between the title and buttons
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -62,15 +57,14 @@ class HomePage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
+                // Navigate to BookingPage2 regardless of authentication status
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => BookingPage2(user: user),
-                  ),
+                  MaterialPageRoute(builder: (context) => BookingPage2()),
                 );
               },
               child: Text('View Packages'),
-            ),
+            )
           ],
         ),
       ),
