@@ -1,8 +1,8 @@
 import 'user.dart';
+import 'main.dart';
 import 'package:flutter/material.dart';
 import 'booking_page_2.dart'; // Import BookingPage2
 import 'package:intl/intl.dart'; // Import the intl package for date formatting
-import 'main.dart';
 
 class BookingPage1 extends StatefulWidget {
   @override

@@ -19,6 +19,7 @@ class DatabaseHelper {
     _database = await _initDatabase();
     return _database!;
   }
+  
 
   _initDatabase() async {
     String path = join(await getDatabasesPath(), _databaseName);
@@ -61,4 +62,6 @@ class DatabaseHelper {
       )
     ''');
   }
+  
+  
 }
