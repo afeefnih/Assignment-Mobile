@@ -20,6 +20,64 @@ class DatabaseHelper {
     return _database!;
   }
 
+  //////////////////////////////
+  Future<List<Map<String, dynamic>>> getUsers() async {
+    Database db = await instance.database;
+    return await db.query(tableUsers,
+        columns: ['userid', 'name', 'email', 'phone', 'username', 'password']);
+  }
+
+  Future<int> insertBooking(
+      int userid,
+      String bookdate,
+      String booktime,
+      String checkindate,
+      String checkoutdate,
+      String homestypackage,
+      int numguest,
+      double packageprice) async {
+    Database db = await instance.database;
+    return await db.insert(tableHomebook, {
+      'userid': userid,
+      'bookdate': bookdate,
+      'booktime': booktime,
+      'checkindate': checkindate,
+      'checkoutdate': checkoutdate,
+      'homestypackage': homestypackage,
+      'numguest': numguest,
+      'packageprice': packageprice,
+    });
+  }
+
+  Future<List<Map<String, dynamic>>> getBookings() async {
+    Database db = await instance.database;
+    return await db.query(tableHomebook);
+  }
+
+  Future<int> deleteUser(int id) async {
+    Database db = await instance.database;
+    return await db.delete(tableUsers, where: 'userid =?', whereArgs: [id]);
+  }
+
+  Future<int> updateUser(int id, String name, String email, String phone,
+      String username, String password) async {
+    Database db = await instance.database;
+    return await db.update(
+      tableUsers,
+      {
+        'name': name,
+        'email': email,
+        'phone': phone,
+        'username': username,
+        'password': password,
+      },
+      where: 'userid =?',
+      whereArgs: [id],
+    );
+  }
+  //////////////////////////////////
+
+  
   _initDatabase() async {
     String path = join(await getDatabasesPath(), _databaseName);
     return await openDatabase(path,
