@@ -2,10 +2,9 @@ import 'user.dart';
 import 'package:flutter/material.dart';
 import 'booking_page_2.dart'; // Import BookingPage2
 import 'package:intl/intl.dart'; // Import the intl package for date formatting
+import 'main.dart';
 
 class BookingPage1 extends StatefulWidget {
-  const BookingPage1({super.key});
-
   @override
   _BookingPage1State createState() => _BookingPage1State();
 }
@@ -19,14 +18,12 @@ class _BookingPage1State extends State<BookingPage1> {
   final TextEditingController _bookingDateTimeController = TextEditingController();
   final TextEditingController _checkInDateTimeController = TextEditingController();
   final TextEditingController _checkOutDateTimeController = TextEditingController();
-  //final TextEditingController _additionalRequestsController = TextEditingController();
-  
+
   final List<int> _numGuestsList = List.generate(10, (index) => index + 1);
   int _numGuests = 1;
   DateTime? _selectedBookingDate;
   DateTime? _selectedCheckInDate;
   DateTime? _selectedCheckOutDate;
-  //TimeOfDay? _selectedTime;
   int _selectedRequestIndex = -1;
   final List<String> _smoking = ['Smoking Room', 'Non-Smoking Room'];
 
@@ -39,14 +36,14 @@ class _BookingPage1State extends State<BookingPage1> {
       lastDate: DateTime(2101),
     );
 
-    if (pickedDate != null) {
+    if (pickedDate!= null) {
       // If date is selected, show time picker
       final TimeOfDay? pickedTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(),
       );
 
-      if (pickedTime != null) {
+      if (pickedTime!= null) {
         // If time is also selected, update the date and time accordingly
         setState(() {
           if (fieldType == 'booking') {
@@ -91,19 +88,32 @@ class _BookingPage1State extends State<BookingPage1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('User information'),
+    appBar: AppBar(
+        title: Text('Homestay Booking System'),
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Image.asset('assets/icon.jpg'),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+          },
+        ),
       ),
       body: Container(
+        width: double.infinity,
+        height: double.infinity,
         decoration: BoxDecoration(
-          // Add a calm background color
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.blue[200]!,
-              Colors.white,
+              Color(0xFF4CAF50),
+              Color(0xFF8BC34A),
+              Color(0xFFCDDC39),
             ],
+            stops: [0.1, 0.5, 0.9],
           ),
         ),
         child: SingleChildScrollView(
@@ -268,7 +278,12 @@ class _BookingPage1State extends State<BookingPage1> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.brown),
+                      foregroundColor: MaterialStateProperty.all(Colors.white),
+                      padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
+                    ),
+                    onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {
                       // Calculate the number of days
                       int numberOfDays = calculateNumberOfDays(
@@ -288,42 +303,58 @@ class _BookingPage1State extends State<BookingPage1> {
                           : '';
 
                       // Display user information and additional requests
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text('Booking Summary'),
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(userInfo),
-                                const SizedBox(height: 10),
-                                Text(additionalRequest),
-                                const SizedBox(height: 10),
-                                Text('Number of Guests: $_numGuests'),
-                              ],
-                            ),
-                            actions: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => BookingPage2(
-                                        // Data as arguments to send to next page.
-                                        user: User(numberOfDays, _numGuests),
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: const Text('Next'),
+                                                showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text('Booking Summary'),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(userInfo),
+                                      const SizedBox(height: 10),
+                                      Text(additionalRequest),
+                                      const SizedBox(height: 10),
+                                      Text('Number of Guests: $_numGuests'),
+                                    ],
+                                  ),
+                                  actions: [
+                          ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+                                  if (states.contains(MaterialState.pressed)) {
+                                    return Colors.brown; // Color when button is pressed
+                                  }
+                                  return Colors.white; // Default color
+                                }),
+                                foregroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+                                  if (states.contains(MaterialState.pressed)) {
+                                    return Colors.white; // Text color when button is pressed
+                                  }
+                                  return Colors.brown; // Default text color
+                                }),
+                                padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
                               ),
-                            ],
-                          );
-                        },
-                      );
+                              onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BookingPage2(
+                                      // Data as arguments to send to next page.
+                                      user: User(numberOfDays, _numGuests),
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: const Text('Next'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+
                     }
                   },
                   child: const Text('Next'),
@@ -341,3 +372,5 @@ class _BookingPage1State extends State<BookingPage1> {
     return checkOut.difference(checkIn).inDays;
   }
 }
+
+
