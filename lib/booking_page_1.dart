@@ -126,30 +126,30 @@ class _BookingPage1State extends State<BookingPage1> {
                 const Text(
                   'User Details:',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
+                ),const SizedBox(height: 20),
                 TextFormField(
                   controller: _nameController,
-                  decoration: const InputDecoration(labelText: 'Name'),
+                  decoration: const InputDecoration(prefixIcon: Icon(Icons.person), labelText: 'Name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your name';
                     }
                     return null;
                   },
-                ),
+                ),const SizedBox(height: 20),
                 TextFormField(
                   controller: _addressController,
-                  decoration: const InputDecoration(labelText: 'Address'),
+                  decoration: const InputDecoration(prefixIcon: Icon(Icons.location_on), labelText: 'Address'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your address';
                     }
                     return null;
                   },
-                ),
+                ),const SizedBox(height: 20),
                 TextFormField(
                   controller: _phoneController,
-                  decoration: const InputDecoration(labelText: 'Phone No'),
+                  decoration: const InputDecoration(prefixIcon: Icon(Icons.phone),labelText: 'Phone No'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your phone number';
@@ -161,10 +161,10 @@ class _BookingPage1State extends State<BookingPage1> {
                     return null;
                   },
                   keyboardType: TextInputType.phone,
-                ),
+                ),const SizedBox(height: 20),
                 TextFormField(
                   controller: _emailController,
-                  decoration: const InputDecoration(labelText: 'Email'),
+                  decoration: const InputDecoration(prefixIcon: Icon(Icons.email), labelText: 'Email'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email';
@@ -182,7 +182,7 @@ class _BookingPage1State extends State<BookingPage1> {
                 const Text(
                   'Booking Information:',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
+                ),const SizedBox(height: 20),
                 TextFormField(
                   controller: _bookingDateTimeController,
                   decoration: InputDecoration(
@@ -199,7 +199,7 @@ class _BookingPage1State extends State<BookingPage1> {
                     return null;
                   },
                   readOnly: true,
-                ),
+                ),const SizedBox(height: 20),
                 TextFormField(
                   controller: _checkInDateTimeController,
                   decoration: InputDecoration(
@@ -216,7 +216,7 @@ class _BookingPage1State extends State<BookingPage1> {
                     return null;
                   },
                   readOnly: true,
-                ),
+                ),const SizedBox(height: 20),
                 TextFormField(
                   controller: _checkOutDateTimeController,
                   decoration: InputDecoration(
@@ -259,6 +259,10 @@ class _BookingPage1State extends State<BookingPage1> {
                       .toList(),
                 ),
                 const SizedBox(height: 20),
+                const Text(
+                  'Number of Guests',
+                  style: TextStyle(fontSize: 16,),
+                ),
                 DropdownButtonFormField<int>(
                   value: _numGuests,
                   items: _numGuestsList.map((int value) {
