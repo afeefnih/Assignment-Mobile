@@ -2,16 +2,16 @@ import 'models/user.dart';
 import 'booking_page_4.dart';
 import 'package:flutter/material.dart';
 
-class BookingPage3 extends StatefulWidget {
-  const BookingPage3({super.key, required this.user, required this.price});
+class PaymentView extends StatefulWidget {
+  const PaymentView({super.key, required this.user, required this.price});
   final double price;
   final User user;
 
   @override
-  _BookingPage3State createState() => _BookingPage3State();
+  _PaymentViewState createState() => _PaymentViewState();
 }
 
-class _BookingPage3State extends State<BookingPage3> {
+class _PaymentViewState extends State<PaymentView> {
   final TextEditingController _discountCodeController = TextEditingController();
 
   double _discountAmount = 0;

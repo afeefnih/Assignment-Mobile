@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'login.dart';
 import 'register.dart';
-import '/booking_page_2.dart';
+import 'package_view.dart';
 
 class Welcome extends StatelessWidget {
   const Welcome({super.key});
@@ -120,7 +120,7 @@ class Welcome extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => BookingPage2()),
+                                  builder: (context) => PackageView()),
                             );
                           },
                           child: Text(

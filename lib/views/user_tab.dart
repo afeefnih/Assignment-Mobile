@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '/booking_page_2.dart';
+import 'package_view.dart';
 import '/views/profile.dart';
 
 
@@ -21,7 +21,7 @@ class _TabViewState extends State<TabView> {
   void initState() {
     super.initState();
     tabs = [
-      const BookingPage2(),
+      PackageView(),
       Container(color: Colors.green),
       ProfileTab(id: widget.id),
     ];

@@ -1,13 +1,11 @@
-import 'models/user.dart';
-import 'models/homestay.dart';
-import 'views/login.dart';
-import 'booking_page_3.dart';
+import 'package:assignment1/booking_page_1.dart';
+import '../models/homestay.dart';
+import 'login.dart';
 import 'package:flutter/material.dart';
 
-class BookingPage2 extends StatelessWidget {
-  final User? user;
-
-  const BookingPage2({Key? key, this.user}) : super(key: key);
+class PackageView extends StatelessWidget {
+  final int? id;
+  const PackageView({Key? key, this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -130,15 +128,13 @@ class BookingPage2 extends StatelessWidget {
           actions: [
             ElevatedButton(
               onPressed: () {
-                if (user != null) {
+                if (id != null) {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => BookingPage3(
-                        // Data as arguments to send to the next page.
-                        user: user!,
-                        price: homestay.price,
+                      builder: (context) => BookingForm(
+                        id: id!, price: homestay.price,
                       ),
                     ),
                   );

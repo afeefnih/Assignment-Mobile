@@ -1,14 +1,17 @@
 import 'models/user.dart';
 import 'package:flutter/material.dart';
-import 'booking_page_2.dart'; // Import BookingPage2
 import 'package:intl/intl.dart'; // Import the intl package for date formatting
+import '/booking_page_3.dart';
 
-class BookingPage1 extends StatefulWidget {
+class BookingForm extends StatefulWidget {
+  final int id;
+  final double price;
+  const BookingForm({super.key, required this.id, required this.price});
   @override
-  _BookingPage1State createState() => _BookingPage1State();
+  _BookingFormState createState() => _BookingFormState();
 }
 
-class _BookingPage1State extends State<BookingPage1> {
+class _BookingFormState extends State<BookingForm> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
@@ -363,9 +366,10 @@ class _BookingPage1State extends State<BookingPage1> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => BookingPage2(
+                                      builder: (context) => PaymentView(
                                         // Data as arguments to send to next page.
                                         user: User(numberOfDays, _numGuests),
+                                        price: widget.price,
                                       ),
                                     ),
                                   );
