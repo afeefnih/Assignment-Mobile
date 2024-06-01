@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '/profile_page.dart';
-import '/models/userId.dart';
+import 'profile_update.dart';
 import '../db/database_helper.dart';
 
 class ProfileTab extends StatelessWidget {
@@ -61,26 +60,17 @@ class ProfileTab extends StatelessWidget {
                 }
               },
             ),
-            GestureDetector(
-              onTap: () {
+            ElevatedButton(
+              onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ProfilePage(
-                          user: UserId(
-                              name: "3454",
-                              email: 'gbfgb',
-                              password: '3434',
-                              phone: '0112227655'))), //dummy data
+                    builder: (context) => ProfilePage(id: id),
+                  ),
                 );
               },
-              child: Text(
+              child: const Text(
                 'Update Profile',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: const Color.fromARGB(255, 88, 57, 45),
-                  fontWeight: FontWeight.bold,
-                ),
               ),
             ),
             GestureDetector(

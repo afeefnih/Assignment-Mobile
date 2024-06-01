@@ -1,10 +1,12 @@
-import 'models/userId.dart';
+import '../db/database_helper.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
-  final UserId user;
 
-  const ProfilePage({Key? key, required this.user}) : super(key: key);
+ final int id;
+
+  const ProfilePage({super.key, required this.id});
+
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -12,21 +14,18 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController _nameController;
-  late TextEditingController _emailController;
-  late TextEditingController _phoneController;
-  late TextEditingController _passwordController;
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.user.name);
-    _emailController = TextEditingController(text: widget.user.email);
-    _phoneController = TextEditingController(text: widget.user.phone);
-    _passwordController = TextEditingController(text: widget.user.password);
+    _fetchUserInfo();
   }
 
-  @override
+@override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
@@ -35,14 +34,27 @@ class _ProfilePageState extends State<ProfilePage> {
     super.dispose();
   }
 
+  Future<void> _fetchUserInfo() async {
+    DatabaseHelper dbHelper = DatabaseHelper.instance;
+    Map<String, dynamic>? user = await dbHelper.getUserById(widget.id);
+    setState(() {
+      if (user != null) {
+        _nameController.text = user['name'] ?? '';
+        _emailController.text = user['email'] ?? '';
+        _phoneController.text = user['phone'].toString();
+        _passwordController.text = user['password'].toString();
+      }
+    });
+  }
+
   void _updateProfile() {
     if (_formKey.currentState!.validate()) {
-      widget.user.updateProfile(
+      /* widget.user.updateProfile(
         name: _nameController.text,
         email: _emailController.text,
         phone: _phoneController.text,
         password: _passwordController.text,
-      );
+      ); */
 
       // Here you would typically call a method to update the user's profile in your backend or local storage
 
