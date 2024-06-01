@@ -11,7 +11,7 @@ class PackageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Homestay Details'),
+        title: const Text('Homestay Package'),
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: Image.asset('assets/icon.jpg'),

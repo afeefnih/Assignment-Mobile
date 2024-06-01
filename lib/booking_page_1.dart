@@ -94,7 +94,7 @@ class _BookingFormState extends State<BookingForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Homestay Booking System'),
+        title: Text('Booking Form'),
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: Image.asset('assets/icon.jpg'),
