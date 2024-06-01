@@ -1,11 +1,13 @@
 import 'package:assignment1/booking_page_1.dart';
+import '../database/database_helper.dart';
 import '../models/homestay.dart';
 import 'login.dart';
 import 'package:flutter/material.dart';
 
 class PackageView extends StatelessWidget {
   const PackageView({super.key, this.id});
-final int? id;
+  final int? id;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +20,9 @@ final int? id;
           },
         ),
       ),
-      body: PackageContent(id: id,),
+      body: PackageContent(
+        id: id,
+      ),
     );
   }
 }
@@ -27,6 +31,17 @@ class PackageContent extends StatelessWidget {
   final int? id;
   const PackageContent({Key? key, this.id}) : super(key: key);
 
+  Future<String> fetchUserName() async {
+    DatabaseHelper dbHelper = DatabaseHelper.instance;
+    Map<String, dynamic>? user = await dbHelper.getUserById(id!);
+
+    if (user != null && user.containsKey('name')) {
+      return user['name'];
+    } else {
+      return 'User not found';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +49,10 @@ class PackageContent extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -46,13 +65,35 @@ class PackageContent extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 10),
-              Expanded(
-                child: ListView.builder(
+          padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20),
+                (id != null)
+                    ? Card(
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: FutureBuilder<String>(
+                              future: fetchUserName(),
+                              builder: (context, snapshot) {
+                                final userName = snapshot.data ?? 'User';
+                                return Text(
+                                  'Welcome, $userName!',
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      )
+                    : SizedBox.shrink(),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
                   itemCount: Homestay.samples.length,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
@@ -66,8 +107,8 @@ class PackageContent extends StatelessWidget {
                     );
                   },
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
