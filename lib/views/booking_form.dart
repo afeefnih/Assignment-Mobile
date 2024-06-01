@@ -170,7 +170,7 @@ class _BookingFormState extends State<BookingForm> {
                 TextFormField(
                   controller: _bookingDateTimeController,
                   decoration: InputDecoration(
-                    labelText: 'Booking Date and Time',
+                    hintText: 'Booking Date and Time',
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.calendar_today),
                       onPressed: () => _selectDate(context, 'booking'),
@@ -188,7 +188,7 @@ class _BookingFormState extends State<BookingForm> {
                 TextFormField(
                   controller: _checkInDateTimeController,
                   decoration: InputDecoration(
-                    labelText: 'Check-in Date',
+                    hintText: 'Check-in Date',
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.calendar_today),
                       onPressed: () => _selectDate(context, 'checkin'),
@@ -206,7 +206,7 @@ class _BookingFormState extends State<BookingForm> {
                 TextFormField(
                   controller: _checkOutDateTimeController,
                   decoration: InputDecoration(
-                    labelText: 'Check-out Date',
+                    hintText: 'Check-out Date',
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.calendar_today),
                       onPressed: () => _selectDate(context, 'checkout'),
