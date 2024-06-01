@@ -1,5 +1,4 @@
 import 'models/user.dart';
-import 'main.dart';
 import 'package:flutter/material.dart';
 import 'booking_page_2.dart'; // Import BookingPage2
 import 'package:intl/intl.dart'; // Import the intl package for date formatting
@@ -15,9 +14,12 @@ class _BookingPage1State extends State<BookingPage1> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _bookingDateTimeController = TextEditingController();
-  final TextEditingController _checkInDateTimeController = TextEditingController();
-  final TextEditingController _checkOutDateTimeController = TextEditingController();
+  final TextEditingController _bookingDateTimeController =
+      TextEditingController();
+  final TextEditingController _checkInDateTimeController =
+      TextEditingController();
+  final TextEditingController _checkOutDateTimeController =
+      TextEditingController();
 
   final List<int> _numGuestsList = List.generate(10, (index) => index + 1);
   int _numGuests = 1;
@@ -36,14 +38,14 @@ class _BookingPage1State extends State<BookingPage1> {
       lastDate: DateTime(2101),
     );
 
-    if (pickedDate!= null) {
+    if (pickedDate != null) {
       // If date is selected, show time picker
       final TimeOfDay? pickedTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(),
       );
 
-      if (pickedTime!= null) {
+      if (pickedTime != null) {
         // If time is also selected, update the date and time accordingly
         setState(() {
           if (fieldType == 'booking') {
@@ -88,16 +90,13 @@ class _BookingPage1State extends State<BookingPage1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    appBar: AppBar(
+      appBar: AppBar(
         title: Text('Homestay Booking System'),
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: Image.asset('assets/icon.jpg'),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            );
+            Navigator.pop(context);
           },
         ),
       ),
@@ -126,30 +125,37 @@ class _BookingPage1State extends State<BookingPage1> {
                 const Text(
                   'User Details:',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),const SizedBox(height: 20),
+                ),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _nameController,
-                  decoration: const InputDecoration(prefixIcon: Icon(Icons.person), labelText: 'Name'),
+                  decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.person), labelText: 'Name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your name';
                     }
                     return null;
                   },
-                ),const SizedBox(height: 20),
+                ),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _addressController,
-                  decoration: const InputDecoration(prefixIcon: Icon(Icons.location_on), labelText: 'Address'),
+                  decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.location_on),
+                      labelText: 'Address'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your address';
                     }
                     return null;
                   },
-                ),const SizedBox(height: 20),
+                ),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _phoneController,
-                  decoration: const InputDecoration(prefixIcon: Icon(Icons.phone),labelText: 'Phone No'),
+                  decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.phone), labelText: 'Phone No'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your phone number';
@@ -161,10 +167,12 @@ class _BookingPage1State extends State<BookingPage1> {
                     return null;
                   },
                   keyboardType: TextInputType.phone,
-                ),const SizedBox(height: 20),
+                ),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _emailController,
-                  decoration: const InputDecoration(prefixIcon: Icon(Icons.email), labelText: 'Email'),
+                  decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.email), labelText: 'Email'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email';
@@ -182,7 +190,8 @@ class _BookingPage1State extends State<BookingPage1> {
                 const Text(
                   'Booking Information:',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),const SizedBox(height: 20),
+                ),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _bookingDateTimeController,
                   decoration: InputDecoration(
@@ -199,7 +208,8 @@ class _BookingPage1State extends State<BookingPage1> {
                     return null;
                   },
                   readOnly: true,
-                ),const SizedBox(height: 20),
+                ),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _checkInDateTimeController,
                   decoration: InputDecoration(
@@ -216,7 +226,8 @@ class _BookingPage1State extends State<BookingPage1> {
                     return null;
                   },
                   readOnly: true,
-                ),const SizedBox(height: 20),
+                ),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _checkOutDateTimeController,
                   decoration: InputDecoration(
@@ -261,7 +272,9 @@ class _BookingPage1State extends State<BookingPage1> {
                 const SizedBox(height: 20),
                 const Text(
                   'Number of Guests',
-                  style: TextStyle(fontSize: 16,),
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
                 ),
                 DropdownButtonFormField<int>(
                   value: _numGuests,
@@ -282,7 +295,7 @@ class _BookingPage1State extends State<BookingPage1> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                    onPressed: () {
+                  onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {
                       // Calculate the number of days
                       int numberOfDays = calculateNumberOfDays(
@@ -302,58 +315,67 @@ class _BookingPage1State extends State<BookingPage1> {
                           : '';
 
                       // Display user information and additional requests
-                                                showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: const Text('Booking Summary'),
-                                  content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(userInfo),
-                                      const SizedBox(height: 10),
-                                      Text(additionalRequest),
-                                      const SizedBox(height: 10),
-                                      Text('Number of Guests: $_numGuests'),
-                                    ],
-                                  ),
-                                  actions: [
-                          ElevatedButton(
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
-                                  if (states.contains(MaterialState.pressed)) {
-                                    return Colors.brown; // Color when button is pressed
-                                  }
-                                  return Colors.white; // Default color
-                                }),
-                                foregroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
-                                  if (states.contains(MaterialState.pressed)) {
-                                    return Colors.white; // Text color when button is pressed
-                                  }
-                                  return Colors.brown; // Default text color
-                                }),
-                                padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
-                              ),
-                              onPressed: () {
-                                Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => BookingPage2(
-                                      // Data as arguments to send to next page.
-                                      user: User(numberOfDays, _numGuests),
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: const Text('Next'),
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Booking Summary'),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(userInfo),
+                                const SizedBox(height: 10),
+                                Text(additionalRequest),
+                                const SizedBox(height: 10),
+                                Text('Number of Guests: $_numGuests'),
+                              ],
                             ),
-                          ],
-                        );
-                      },
-                    );
-
+                            actions: [
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.resolveWith<Color>(
+                                          (Set<MaterialState> states) {
+                                    if (states
+                                        .contains(MaterialState.pressed)) {
+                                      return Colors
+                                          .brown; // Color when button is pressed
+                                    }
+                                    return Colors.white; // Default color
+                                  }),
+                                  foregroundColor:
+                                      MaterialStateProperty.resolveWith<Color>(
+                                          (Set<MaterialState> states) {
+                                    if (states
+                                        .contains(MaterialState.pressed)) {
+                                      return Colors
+                                          .white; // Text color when button is pressed
+                                    }
+                                    return Colors.brown; // Default text color
+                                  }),
+                                  padding: MaterialStateProperty.all(
+                                      EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 8)),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BookingPage2(
+                                        // Data as arguments to send to next page.
+                                        user: User(numberOfDays, _numGuests),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: const Text('Next'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     }
                   },
                   child: const Text('Next'),
@@ -371,5 +393,3 @@ class _BookingPage1State extends State<BookingPage1> {
     return checkOut.difference(checkIn).inDays;
   }
 }
-
-

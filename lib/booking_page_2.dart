@@ -3,7 +3,6 @@ import 'models/homestay.dart';
 import 'views/login.dart';
 import 'booking_page_3.dart';
 import 'package:flutter/material.dart';
-import 'main.dart';
 
 class BookingPage2 extends StatelessWidget {
   final User? user;
@@ -19,10 +18,7 @@ class BookingPage2 extends StatelessWidget {
         leading: IconButton(
           icon: Image.asset('assets/icon.jpg'),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            );
+            Navigator.pop(context);
           },
         ),
       ),
@@ -103,7 +99,8 @@ class BookingPage2 extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           content: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -132,7 +129,6 @@ class BookingPage2 extends StatelessWidget {
           ),
           actions: [
             ElevatedButton(
-              style: buttonStyle,
               onPressed: () {
                 if (user != null) {
                   Navigator.pop(context);
@@ -157,7 +153,6 @@ class BookingPage2 extends StatelessWidget {
               child: Text('Choose'),
             ),
             ElevatedButton(
-              style: buttonStyle,
               onPressed: () {
                 Navigator.pop(context);
               },

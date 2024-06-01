@@ -148,9 +148,4 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 }
 
-final buttonStyle = ButtonStyle(
-  backgroundColor: MaterialStateProperty.all(Colors.brown),
-  foregroundColor: MaterialStateProperty.all(Colors.white),
-  padding: MaterialStateProperty.all(
-      EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
-);
+

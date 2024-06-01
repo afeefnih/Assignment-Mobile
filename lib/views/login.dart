@@ -33,8 +33,11 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => TabView(id: result.first['userid'],)), // Navigate to BookingPage1
+              builder: (context) => TabView(
+                    id: result.first['userid'],
+                  )), // Navigate to BookingPage1
         );
+        
       } else {
         if (!mounted) return; // Ensure the widget is still mounted
         ScaffoldMessenger.of(context).showSnackBar(
@@ -136,10 +139,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
-final buttonStyle = ButtonStyle(
-  backgroundColor: MaterialStateProperty.all(Colors.brown),
-  foregroundColor: MaterialStateProperty.all(Colors.white),
-  padding: MaterialStateProperty.all(
-      EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
-);
