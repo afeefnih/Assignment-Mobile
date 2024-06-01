@@ -1,4 +1,4 @@
-import '../database/database_helper.dart';
+import '../db/database_helper.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
 

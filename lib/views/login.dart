@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart'; // Import sq
 import 'register.dart'; // Import RegisterPage
-import '../database/database_helper.dart';
+import '../db/database_helper.dart';
 import 'user_tab.dart';
 
 class LoginPage extends StatefulWidget {

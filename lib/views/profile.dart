@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '/profile_page.dart';
 import '/models/userId.dart';
-import '/database/database_helper.dart';
+import '../db/database_helper.dart';
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab({super.key, required this.id});
