@@ -32,15 +32,20 @@ class _PaymentViewState extends State<PaymentView> {
         title: const Text('Payment Details'),
       ),
       body: Container(
-        decoration: BoxDecoration(
-          // Add a calm background color
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.blue[200]!,
-              Colors.white,
+              Color(0xFF4CAF50),
+              Color(0xFF8BC34A),
+              Color(0xFFCDDC39),
             ],
+            stops: [0.1, 0.5, 0.9],
           ),
         ),
         child: Padding(
@@ -52,7 +57,7 @@ class _PaymentViewState extends State<PaymentView> {
                 //color: Colors.white,
                 decoration: BoxDecoration(
                   color: Colors.white, //assign either here or to the container
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -67,7 +72,7 @@ class _PaymentViewState extends State<PaymentView> {
                       TextField(
                         controller: _discountCodeController,
                         decoration:
-                            const InputDecoration(labelText: 'Discount Code'),
+                            const InputDecoration(hintText: 'Enter code here', border: OutlineInputBorder()),
                         // Implement validation and discount code functionality
                       ),
                       const SizedBox(height: 10),

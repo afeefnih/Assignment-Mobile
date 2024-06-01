@@ -47,7 +47,7 @@ class _RegisterPageState extends State<RegisterPage> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(50),
             topRight: Radius.circular(50),
@@ -75,8 +75,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   TextFormField(
                     controller: _nameController,
                     decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.person), labelText: 'Name'),
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                        prefixIcon: Icon(Icons.person), hintText: 'Name'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your name';
@@ -88,8 +87,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   TextFormField(
                     controller: _emailController,
                     decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.email), labelText: 'Email'),
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                        prefixIcon: Icon(Icons.email), hintText: 'Email'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';
@@ -101,9 +99,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   TextFormField(
                     controller: _phoneController,
                     decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.phone), labelText: 'Phone Number'),
+                        prefixIcon: Icon(Icons.phone), hintText: 'Phone Number'),
                     keyboardType: TextInputType.phone,
-                    style: TextStyle(fontWeight: FontWeight.bold),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your phone number';
@@ -115,8 +112,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   TextFormField(
                     controller: _usernameController,
                     decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.person), labelText: 'Username'),
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                        prefixIcon: Icon(Icons.person), hintText: 'Username'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a username';
@@ -128,9 +124,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   TextFormField(
                     controller: _passwordController,
                     decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.lock), labelText: 'Password'),
+                        prefixIcon: Icon(Icons.lock), hintText: 'Password'),
                     obscureText: true,
-                    style: TextStyle(fontWeight: FontWeight.bold),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a password';

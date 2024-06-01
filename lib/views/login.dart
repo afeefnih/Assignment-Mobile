@@ -88,8 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                 TextFormField(
                   controller: _usernameController,
                   decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.person), labelText: 'Username'),
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                      prefixIcon: Icon(Icons.person), hintText: 'Username'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your username';
@@ -101,9 +100,8 @@ class _LoginPageState extends State<LoginPage> {
                 TextFormField(
                   controller: _passwordController,
                   decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.lock), labelText: 'Password'),
+                      prefixIcon: Icon(Icons.lock), hintText: 'Password'),
                   obscureText: true,
-                  style: TextStyle(fontWeight: FontWeight.bold),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your password';

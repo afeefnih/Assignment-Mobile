@@ -1,3 +1,4 @@
+import '../database/database_helper.dart';
 import '../models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import the intl package for date formatting
@@ -12,17 +13,43 @@ class BookingForm extends StatefulWidget {
 }
 
 class _BookingFormState extends State<BookingForm> {
+  String _userInfo = '';
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _bookingDateTimeController =
       TextEditingController();
   final TextEditingController _checkInDateTimeController =
       TextEditingController();
   final TextEditingController _checkOutDateTimeController =
       TextEditingController();
+
+  Future<String> fetchUserInfo() async {
+    DatabaseHelper dbHelper = DatabaseHelper.instance;
+    Map<String, dynamic>? user = await dbHelper.getUserById(widget.id);
+
+    if (user != null) {
+      List<String> userInfo = [
+        'Name: ${user['name']}',
+        'Email: ${user['email']}',
+        'Phone: ${user['phone']}',
+      ];
+      return userInfo.join('\n');
+    } else {
+      return 'User not found';
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserInfo();
+  }
+
+  Future<void> _fetchUserInfo() async {
+    String userInfo = await fetchUserInfo();
+    setState(() {
+      _userInfo = userInfo;
+    });
+  }
 
   final List<int> _numGuestsList = List.generate(10, (index) => index + 1);
   int _numGuests = 1;
@@ -95,9 +122,8 @@ class _BookingFormState extends State<BookingForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Booking Form'),
-        backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Image.asset('assets/icon.jpg'),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -106,7 +132,11 @@ class _BookingFormState extends State<BookingForm> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -130,65 +160,7 @@ class _BookingFormState extends State<BookingForm> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 20),
-                TextFormField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.person), labelText: 'Name'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your name';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _addressController,
-                  decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.location_on),
-                      labelText: 'Address'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your address';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _phoneController,
-                  decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.phone), labelText: 'Phone No'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your phone number';
-                    }
-                    // Validate phone number format (10 digits)
-                    if (!RegExp(r'^[0-9]{10}$').hasMatch(value)) {
-                      return 'Please enter a valid phone number';
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.phone,
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.email), labelText: 'Email'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
-                    }
-                    // Validate email format
-                    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                        .hasMatch(value)) {
-                      return 'Please enter a valid email address';
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.emailAddress,
-                ),
+                Text(_userInfo),
                 const SizedBox(height: 20),
                 const Text(
                   'Booking Information:',
@@ -306,12 +278,8 @@ class _BookingFormState extends State<BookingForm> {
 
                       // Extract user information
                       String userInfo = 'User Information:\n';
-                      userInfo += 'Name: ${_nameController.text}\n';
-                      userInfo += 'Address: ${_addressController.text}\n';
-                      userInfo += 'Phone No: ${_phoneController.text}\n';
-                      userInfo += 'Email: ${_emailController.text}\n';
+                      userInfo += '${_userInfo}\n';
                       userInfo += 'No of Days: $numberOfDays\n';
-
                       // Additional Requests
                       String additionalRequest = _selectedRequestIndex != -1
                           ? 'Additional Details: ${_smoking[_selectedRequestIndex]}\n'
@@ -328,39 +296,12 @@ class _BookingFormState extends State<BookingForm> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(userInfo),
-                                const SizedBox(height: 10),
                                 Text(additionalRequest),
-                                const SizedBox(height: 10),
                                 Text('Number of Guests: $_numGuests'),
                               ],
                             ),
                             actions: [
                               ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.resolveWith<Color>(
-                                          (Set<MaterialState> states) {
-                                    if (states
-                                        .contains(MaterialState.pressed)) {
-                                      return Colors
-                                          .brown; // Color when button is pressed
-                                    }
-                                    return Colors.white; // Default color
-                                  }),
-                                  foregroundColor:
-                                      MaterialStateProperty.resolveWith<Color>(
-                                          (Set<MaterialState> states) {
-                                    if (states
-                                        .contains(MaterialState.pressed)) {
-                                      return Colors
-                                          .white; // Text color when button is pressed
-                                    }
-                                    return Colors.brown; // Default text color
-                                  }),
-                                  padding: MaterialStateProperty.all(
-                                      EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 8)),
-                                ),
                                 onPressed: () {
                                   Navigator.pop(context);
                                   Navigator.push(
