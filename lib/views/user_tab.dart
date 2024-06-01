@@ -21,7 +21,7 @@ class _TabViewState extends State<TabView> {
   void initState() {
     super.initState();
     tabs = [
-      PackageView(),
+      PackageView(id: widget.id),
       Container(color: Colors.green),
       ProfileTab(id: widget.id),
     ];
