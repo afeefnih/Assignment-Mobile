@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'database_helper.dart';
+import '../db/database_helper.dart';
 
 class EditUserPage extends StatefulWidget {
   final Map<String, dynamic> user;
@@ -32,14 +32,22 @@ class _EditUserPageState extends State<EditUserPage> {
   void _saveUser() async {
     if (_formKey.currentState!.validate()) {
       DatabaseHelper db = DatabaseHelper.instance;
-      await db.updateUser(
+
+     /*  await db.updateUser(
         widget.user['userid'],
         _nameController.text,
         _emailController.text,
         _phoneController.text,
         _usernameController.text,
         _passwordController.text,
-      );
+      ); */
+
+      await db.updateUser(widget.user['userid'], {
+        'name': _nameController.text,
+        'email': _emailController.text,
+        'phone': int.parse(_phoneController.text),
+        'password': _passwordController.text,
+      });
       Navigator.pop(context, 'updated');
     }
   }

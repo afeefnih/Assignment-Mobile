@@ -1,6 +1,6 @@
 import 'BookingUsersPage.dart';
-import 'main.dart';
-import 'database_helper.dart';
+import '../main.dart';
+import '../db/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'RegisteredUserPage.dart';
 
@@ -19,8 +19,8 @@ class _AdminPageState extends State<AdminPage> {
   }
 
   _loadUsers() async {
-    DatabaseHelper helper = DatabaseHelper.instance;
-    final users = await helper.getUsers();
+    DatabaseHelper dbhelper = DatabaseHelper.instance;
+    final users = await dbhelper.getUsers();
     setState(() {
       _users = users
           .where((user) => user['name'] != null && user['package'] != null)
@@ -29,15 +29,22 @@ class _AdminPageState extends State<AdminPage> {
   }
 
   _deleteUser(int id) async {
-    DatabaseHelper helper = DatabaseHelper.instance;
-    await helper.deleteUser(id);
+    DatabaseHelper dbhelper = DatabaseHelper.instance;
+    await dbhelper.deleteUser(id);
     _loadUsers();
   }
 
   _updateUser(int id, String name, String email, String phone, String username,
       String password) async {
-    DatabaseHelper helper = DatabaseHelper.instance;
-    await helper.updateUser(id, name, email, phone, username, password);
+    DatabaseHelper dbhelper = DatabaseHelper.instance;
+    //await dbhelper.updateUser(id, name, email, phone, username, password);
+    await dbhelper.updateUser(id, {
+      'name': name,
+      'email': email,
+      'phone': int.parse(phone),
+      'password': password,
+    });
+
     _loadUsers();
   }
 

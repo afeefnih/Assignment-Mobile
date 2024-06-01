@@ -1,6 +1,6 @@
-import 'main.dart';
+import '../main.dart';
 import 'package:flutter/material.dart';
-import 'database_helper.dart';
+import '../db/database_helper.dart';
 import 'BookingUsersPage.dart';
 import 'EditUserPage.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'database_helper.dart';
+import '../db/database_helper.dart';
 import 'RegisteredUserPage.dart';
-import 'main.dart';
+import '../main.dart';
 
 class BookingUsersPage extends StatefulWidget {
   @override
