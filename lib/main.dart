@@ -12,7 +12,8 @@ class MyApp extends StatelessWidget {
     );
     return MaterialApp(
       title: 'Homestay Booking',
-      theme: ThemeData(colorScheme: const ColorScheme.light(
+      theme: ThemeData(
+        colorScheme: const ColorScheme.light(
           primary: Color.fromARGB(255, 39, 35, 45),
           background: const Color.fromARGB(255, 88, 57, 45),
         ),
@@ -43,4 +44,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

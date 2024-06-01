@@ -13,30 +13,7 @@ class BookingForm extends StatefulWidget {
 }
 
 class _BookingFormState extends State<BookingForm> {
-  String _userInfo = '';
-  final _formKey = GlobalKey<FormState>();
-  final TextEditingController _bookingDateTimeController =
-      TextEditingController();
-  final TextEditingController _checkInDateTimeController =
-      TextEditingController();
-  final TextEditingController _checkOutDateTimeController =
-      TextEditingController();
-
-  Future<String> fetchUserInfo() async {
-    DatabaseHelper dbHelper = DatabaseHelper.instance;
-    Map<String, dynamic>? user = await dbHelper.getUserById(widget.id);
-
-    if (user != null) {
-      List<String> userInfo = [
-        'Name: ${user['name']}',
-        'Email: ${user['email']}',
-        'Phone: ${user['phone']}',
-      ];
-      return userInfo.join('\n');
-    } else {
-      return 'User not found';
-    }
-  }
+  Map<String, dynamic>? _user;
 
   @override
   void initState() {
@@ -45,11 +22,22 @@ class _BookingFormState extends State<BookingForm> {
   }
 
   Future<void> _fetchUserInfo() async {
-    String userInfo = await fetchUserInfo();
+    DatabaseHelper dbHelper = DatabaseHelper.instance;
+    Map<String, dynamic>? user = await dbHelper.getUserById(widget.id);
     setState(() {
-      _userInfo = userInfo;
+      _user = user;
     });
   }
+
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _bookingDateTimeController =
+      TextEditingController(
+    text: DateFormat('yyyy-MM-dd hh:mm a').format(DateTime.now()),
+  );
+  final TextEditingController _checkInDateTimeController =
+      TextEditingController();
+  final TextEditingController _checkOutDateTimeController =
+      TextEditingController();
 
   final List<int> _numGuestsList = List.generate(10, (index) => index + 1);
   int _numGuests = 1;
@@ -119,6 +107,34 @@ class _BookingFormState extends State<BookingForm> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> userInfo = [];
+
+    if (_user != null) {
+      userInfo = [
+        Row(
+          children: [
+            Icon(Icons.person),
+            SizedBox(width: 8),
+            Text('Name: ${_user!['name']}'),
+          ],
+        ),
+        Row(
+          children: [
+            Icon(Icons.email),
+            SizedBox(width: 8),
+            Text('Email: ${_user!['email']}'),
+          ],
+        ),
+        Row(
+          children: [
+            Icon(Icons.phone),
+            SizedBox(width: 8),
+            Text('Phone: ${_user!['phone']}'),
+          ],
+        ),
+      ];
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Booking Form'),
@@ -160,7 +176,18 @@ class _BookingFormState extends State<BookingForm> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 20),
-                Text(_userInfo),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: userInfo,
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 20),
                 const Text(
                   'Booking Information:',
@@ -231,27 +258,30 @@ class _BookingFormState extends State<BookingForm> {
                       .asMap()
                       .entries
                       .map(
-                        (MapEntry<int, String> entry) => RadioListTile<int>(
-                          title: Text(entry.value),
-                          value: entry.key,
-                          groupValue: _selectedRequestIndex,
-                          onChanged: (int? value) {
-                            setState(() {
-                              _selectedRequestIndex = value ?? -1;
-                            });
-                          },
+                        (MapEntry<int, String> entry) => SizedBox(
+                          height: 30,
+                          child: RadioListTile<int>(
+                            title: Text(entry.value),
+                            value: entry.key,
+                            groupValue: _selectedRequestIndex,
+                            onChanged: (int? value) {
+                              setState(() {
+                                _selectedRequestIndex = value ?? -1;
+                              });
+                            },
+                            contentPadding: EdgeInsets.all(0),
+                          ),
                         ),
                       )
                       .toList(),
                 ),
                 const SizedBox(height: 20),
                 const Text(
-                  'Number of Guests',
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
+                  'Number of Guests:',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 DropdownButtonFormField<int>(
+                  dropdownColor: Colors.white,
                   value: _numGuests,
                   items: _numGuestsList.map((int value) {
                     return DropdownMenuItem<int>(
@@ -275,11 +305,6 @@ class _BookingFormState extends State<BookingForm> {
                       // Calculate the number of days
                       int numberOfDays = calculateNumberOfDays(
                           _selectedCheckInDate!, _selectedCheckOutDate!);
-
-                      // Extract user information
-                      String userInfo = 'User Information:\n';
-                      userInfo += '${_userInfo}\n';
-                      userInfo += 'No of Days: $numberOfDays\n';
                       // Additional Requests
                       String additionalRequest = _selectedRequestIndex != -1
                           ? 'Additional Details: ${_smoking[_selectedRequestIndex]}\n'
@@ -295,9 +320,14 @@ class _BookingFormState extends State<BookingForm> {
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(userInfo),
-                                Text(additionalRequest),
+                                Column(
+                                  children: userInfo,
+                                ),
+                                const SizedBox(height: 7),
+                                Text('No of Days: $numberOfDays'),
                                 Text('Number of Guests: $_numGuests'),
+                                const SizedBox(height: 7),
+                                Text(additionalRequest),
                               ],
                             ),
                             actions: [

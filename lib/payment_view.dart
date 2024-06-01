@@ -54,9 +54,8 @@ class _PaymentViewState extends State<PaymentView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                //color: Colors.white,
                 decoration: BoxDecoration(
-                  color: Colors.white, //assign either here or to the container
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
@@ -73,7 +72,6 @@ class _PaymentViewState extends State<PaymentView> {
                         controller: _discountCodeController,
                         decoration:
                             const InputDecoration(hintText: 'Enter code here', border: OutlineInputBorder()),
-                        // Implement validation and discount code functionality
                       ),
                       const SizedBox(height: 10),
                       Row(
