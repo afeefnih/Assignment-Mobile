@@ -1,7 +1,7 @@
-import 'models/user.dart';
+import '../models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import the intl package for date formatting
-import '/booking_page_3.dart';
+import '../payment_view.dart';
 
 class BookingForm extends StatefulWidget {
   final int id;

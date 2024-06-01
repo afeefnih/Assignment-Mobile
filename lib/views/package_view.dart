@@ -1,4 +1,4 @@
-import 'package:assignment1/booking_page_1.dart';
+import 'package:assignment1/views/booking_form.dart';
 import '../database/database_helper.dart';
 import '../models/homestay.dart';
 import 'login.dart';
@@ -48,7 +48,7 @@ class PackageContent extends StatelessWidget {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
@@ -90,10 +90,10 @@ class PackageContent extends StatelessWidget {
                           ),
                         ),
                       )
-                    : SizedBox.shrink(),
+                    : const SizedBox.shrink(),
                 ListView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: Homestay.samples.length,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
@@ -135,7 +135,7 @@ class PackageContent extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               homestay.label,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -169,7 +169,7 @@ class PackageContent extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(
                   homestay.label,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
               ),
               Text(homestay.detail),
@@ -198,13 +198,13 @@ class PackageContent extends StatelessWidget {
                   );
                 }
               },
-              child: Text('Choose'),
+              child: const Text('Choose'),
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('Close'),
+              child: const Text('Close'),
             ),
           ],
         );
