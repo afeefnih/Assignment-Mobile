@@ -2,11 +2,9 @@ import '../db/database_helper.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
-
- final int id;
+  final int id;
 
   const ProfilePage({super.key, required this.id});
-
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -25,7 +23,7 @@ class _ProfilePageState extends State<ProfilePage> {
     _fetchUserInfo();
   }
 
-@override
+  @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
@@ -47,22 +45,34 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
-  void _updateProfile() {
-    if (_formKey.currentState!.validate()) {
-      /* widget.user.updateProfile(
-        name: _nameController.text,
-        email: _emailController.text,
-        phone: _phoneController.text,
-        password: _passwordController.text,
-      ); */
+  void _updateProfile() async {
+  if (_formKey.currentState!.validate()) {
+    DatabaseHelper dbHelper = DatabaseHelper.instance;
 
-      // Here you would typically call a method to update the user's profile in your backend or local storage
+    try {
+      int rowsAffected = await dbHelper.updateUser(widget.id, {
+        'name': _nameController.text,
+        'email': _emailController.text,
+        'phone': int.parse(_phoneController.text),
+        'password': _passwordController.text,
+      });
 
+      if (rowsAffected > 0) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Profile updated successfully')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to update profile')),
+        );
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Profile updated successfully')),
+        SnackBar(content: Text('Error updating profile: $e')),
       );
     }
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -93,17 +103,20 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 TextFormField(
                   controller: _nameController,
-                  decoration: InputDecoration(prefixIcon: Icon(Icons.person), labelText: 'Name'),
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.person), labelText: 'Name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your name';
                     }
                     return null;
                   },
-                ),const SizedBox(height: 20),
+                ),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _emailController,
-                  decoration: InputDecoration(prefixIcon: Icon(Icons.email), labelText: 'Email'),
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.email), labelText: 'Email'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email';
@@ -111,10 +124,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     // Add additional email validation if needed
                     return null;
                   },
-                ),const SizedBox(height: 20),
+                ),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _phoneController,
-                  decoration: InputDecoration(prefixIcon: Icon(Icons.phone), labelText: 'Phone'),
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.phone), labelText: 'Phone'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your phone number';
@@ -122,10 +137,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     // Add additional phone validation if needed
                     return null;
                   },
-                ),const SizedBox(height: 20),
+                ),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _passwordController,
-                  decoration: InputDecoration(prefixIcon: Icon(Icons.lock), labelText: 'Password'),
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.lock), labelText: 'Password'),
                   obscureText: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -134,7 +151,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     // Add additional password validation if needed
                     return null;
                   },
-                ),const SizedBox(height: 20),
+                ),
+                const SizedBox(height: 20),
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: _updateProfile,

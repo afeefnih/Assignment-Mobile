@@ -19,7 +19,6 @@ class DatabaseHelper {
     _database = await _initDatabase();
     return _database!;
   }
-  
 
   _initDatabase() async {
     String path = join(await getDatabasesPath(), _databaseName);
@@ -65,11 +64,8 @@ class DatabaseHelper {
 
   Future<Map<String, dynamic>?> getUserById(int userid) async {
     Database db = await instance.database;
-    List<Map<String, dynamic>> results = await db.query(
-      tableUsers,
-      where: 'userid = ?',
-      whereArgs: [userid]
-    );
+    List<Map<String, dynamic>> results =
+        await db.query(tableUsers, where: 'userid = ?', whereArgs: [userid]);
 
     if (results.isNotEmpty) {
       return results.first;
@@ -77,6 +73,14 @@ class DatabaseHelper {
       return null;
     }
   }
-  
-  
+
+  Future<int> updateUser(int userid, Map<String, dynamic> user) async {
+    Database db = await instance.database;
+    return await db.update(
+      'users',
+      user,
+      where: 'userid = ?',
+      whereArgs: [userid],
+    );
+  }
 }
