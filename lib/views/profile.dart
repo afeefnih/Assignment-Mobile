@@ -59,40 +59,75 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
         ),
         child: _userInfo != null
-            ? Column(
-                children: [
-                  // Display user information
-                  Text('Name: ${_userInfo!['name']}'),
-                  Text('Email: ${_userInfo!['email']}'),
-                  Text('Phone: ${_userInfo!['phone']}'),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProfilePage(id: widget.id),
+            ? SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.person),
+                                SizedBox(width: 8),
+                                Text('Name: ${_userInfo!['name']}'),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Icon(Icons.email),
+                                SizedBox(width: 8),
+                                Text('Email: ${_userInfo!['email']}'),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Icon(Icons.phone),
+                                SizedBox(width: 8),
+                                Text('Phone: ${_userInfo!['phone']}'),
+                              ],
+                            ),
+                          ],
                         ),
-                      ).then((_) {
-                        _fetchUserInfo();
-                      });
-                    },
-                    child: const Text('Update Profile'),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      // Add logout functionality
-                    },
-                    child: Text(
-                      'Logout',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: const Color.fromARGB(255, 88, 57, 45),
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                ],
-              )
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProfilePage(id: widget.id),
+                          ),
+                        ).then((_) {
+                          _fetchUserInfo();
+                        });
+                      },
+                      child: const Text('Update Profile'),
+                    ),
+                    const SizedBox(height: 10),
+                    GestureDetector(
+                      onTap: () {
+                        // Add logout functionality
+                      },
+                      child: Text(
+                        'Logout',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: const Color.fromARGB(255, 88, 57, 45),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+            )
             : const Center(child: CircularProgressIndicator()),
       ),
     );
