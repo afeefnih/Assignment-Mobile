@@ -4,22 +4,32 @@ import 'login.dart';
 import 'package:flutter/material.dart';
 
 class PackageView extends StatelessWidget {
-  final int? id;
-  const PackageView({Key? key, this.id}) : super(key: key);
-
+  const PackageView({super.key, this.id});
+final int? id;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Homestay Package'),
-        backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Image.asset('assets/icon.jpg'),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
       ),
+      body: PackageContent(id: id,),
+    );
+  }
+}
+
+class PackageContent extends StatelessWidget {
+  final int? id;
+  const PackageContent({Key? key, this.id}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -134,7 +144,8 @@ class PackageView extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => BookingForm(
-                        id: id!, price: homestay.price,
+                        id: id!,
+                        price: homestay.price,
                       ),
                     ),
                   );

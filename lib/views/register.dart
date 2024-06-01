@@ -37,9 +37,8 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Register'),
-        backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Image.asset('assets/icon.jpg'),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -49,6 +48,10 @@ class _RegisterPageState extends State<RegisterPage> {
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(50),
+            topRight: Radius.circular(50),
+          ),
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -60,86 +63,88 @@ class _RegisterPageState extends State<RegisterPage> {
             stops: [0.1, 0.5, 0.9],
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(25.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                TextFormField(
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.person), labelText: 'Name'),
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your name';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.email), labelText: 'Email'),
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _phoneController,
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.phone), labelText: 'Phone Number'),
-                  keyboardType: TextInputType.phone,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your phone number';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _usernameController,
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.person), labelText: 'Username'),
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a username';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.lock), labelText: 'Password'),
-                  obscureText: true,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a password';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _register,
-                  child: Text('Register'),
-                ),
-              ],
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(25.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.person), labelText: 'Name'),
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your name';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.email), labelText: 'Email'),
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _phoneController,
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.phone), labelText: 'Phone Number'),
+                    keyboardType: TextInputType.phone,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your phone number';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _usernameController,
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.person), labelText: 'Username'),
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a username';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.lock), labelText: 'Password'),
+                    obscureText: true,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a password';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _register,
+                    child: Text('Register'),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

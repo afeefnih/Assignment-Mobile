@@ -21,7 +21,7 @@ class _TabViewState extends State<TabView> {
   void initState() {
     super.initState();
     tabs = [
-      PackageView(id: widget.id),
+      PackageViewUser(id: widget.id),
       Container(color: Colors.green),
       ProfileTab(id: widget.id),
     ];
@@ -37,6 +37,8 @@ class _TabViewState extends State<TabView> {
     return Scaffold(
       body: tabs[currentTabIndex],
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.grey,
+        unselectedItemColor: Colors.white,
         onTap: onTapped,
         currentIndex: currentTabIndex,
         items: [
@@ -54,6 +56,22 @@ class _TabViewState extends State<TabView> {
           )
         ],
       ),
+    );
+  }
+}
+
+
+class PackageViewUser extends StatelessWidget {
+  const PackageViewUser({super.key, this.id});
+final int? id;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Homestay Package'),
+        automaticallyImplyLeading: false,
+      ),
+      body: PackageContent(id: id,),
     );
   }
 }
