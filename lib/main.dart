@@ -40,6 +40,9 @@ class MyApp extends StatelessWidget {
           fillColor: Colors.white,
           border: outlineInputBorder,
         ),
+        snackBarTheme: SnackBarThemeData(
+          backgroundColor: Color.fromARGB(255, 66, 66, 66), 
+        ),
       ),
       home: Welcome(),
     );

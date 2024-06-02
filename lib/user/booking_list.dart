@@ -1,8 +1,10 @@
-import '../models/booking.dart';
-import '../models/homestay.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
+
 import '../db/database_helper.dart';
 import 'package:flutter/material.dart';
-import '../user/edit_booking_page.dart';
+import 'booking_update.dart';
 
 class BookingTab extends StatefulWidget {
   final int id;
@@ -35,12 +37,12 @@ class _BookingTabState extends State<BookingTab> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EditBookingPage(
+        builder: (context) => BookingUpdatePage(
           id: widget.id,
           bookingDetails: _bookings[index],
         ),
       ),
-    );
+    ).then((value) => _loadBookings());
   }
 
   void _deleteBooking(int index) async {
@@ -77,7 +79,7 @@ class _BookingTabState extends State<BookingTab> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Booking Users'),
+        title: Text('Booking List'),
         automaticallyImplyLeading: false,
       ),
       body: Container(
@@ -118,9 +120,13 @@ class _BookingTabState extends State<BookingTab> {
                         children: [
                           Icon(Icons.home),
                           SizedBox(width: 8),
-                          Text(
-                            _bookings[index]['homestypackage'] ?? 'No package',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          Flexible(
+                            child: Text(
+                              _bookings[index]['homestypackage'] ?? 'No package',
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                              overflow: TextOverflow.visible,
+                              softWrap: false,
+                            ),
                           ),
                         ],
                       ),
@@ -142,7 +148,7 @@ class _BookingTabState extends State<BookingTab> {
                           IconButton(
                             icon: Icon(Icons.edit),
                             onPressed: () {
-                              _editBooking(index); // Call _editBooking method with the index
+                              _editBooking(index);
                             },
                           ),
                           IconButton(

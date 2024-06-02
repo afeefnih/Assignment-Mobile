@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import '../user/booking_list.dart';
-import 'package_view.dart';
-import '../user/profile_view.dart';
+import 'booking_list.dart';
+import '../views/package_view.dart';
+import 'profile_view.dart';
 
 
 
 class TabView extends StatefulWidget {
-  const TabView({super.key, required this.id});
+  const TabView({super.key, required this.id, this.tabIndex});
   final String title = "Flutter Bottom Tab demo";
   final int id;
+  final int? tabIndex;
   @override
   State<TabView> createState() => _TabViewState();
 }
@@ -21,6 +22,7 @@ class _TabViewState extends State<TabView> {
   @override
   void initState() {
     super.initState();
+    currentTabIndex = widget.tabIndex ?? 0;
     tabs = [
       PackageViewUser(id: widget.id),
       BookingTab(id: widget.id),

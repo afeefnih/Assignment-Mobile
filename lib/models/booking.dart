@@ -1,11 +1,11 @@
 class Booking {
-  final int id;
-  final DateTime bookdate;
-  final DateTime checkindate;
-  final DateTime checkoutdate;
-  final String homestypackage;
-  final int numguest;
-  final double packageprice;
+  int id;
+  DateTime bookdate;
+  DateTime checkindate;
+  DateTime checkoutdate;
+  String homestypackage;
+  int numguest;
+  double packageprice;
 
   Booking(
       {required this.id,

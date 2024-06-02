@@ -1,4 +1,4 @@
-import 'package:assignment1/views/booking_form.dart';
+import 'package:assignment1/user/booking_form.dart';
 import '../db/database_helper.dart';
 import '../models/homestay.dart';
 import 'login.dart';

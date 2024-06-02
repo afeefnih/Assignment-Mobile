@@ -21,7 +21,6 @@ class DatabaseHelper {
     return _database!;
   }
 
-  //////////////////////////////
   Future<List<Map<String, dynamic>>> getUsers() async {
     Database db = await instance.database;
     return await db.query(tableUsers,
@@ -53,6 +52,35 @@ class DatabaseHelper {
     });
   }
 
+  Future<void> updateBooking(
+      int bookid,
+      DateTime bookdatetime,
+      DateTime checkindate,
+      DateTime checkoutdate,
+      String homestypackage,
+      int numguest,
+      double packageprice) async {
+    Database db = await instance.database;
+
+    DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+    DateFormat timeFormat = DateFormat('HH:mm:ss');
+
+    await db.update(
+      tableHomebook,
+      {
+        'bookdate': dateFormat.format(bookdatetime),
+        'booktime': timeFormat.format(bookdatetime),
+        'checkindate': dateFormat.format(checkindate),
+        'checkoutdate': dateFormat.format(checkoutdate),
+        'homestypackage': homestypackage,
+        'numguest': numguest,
+        'packageprice': packageprice,
+      },
+      where: 'bookid = ?',
+      whereArgs: [bookid],
+    );
+  }
+
   Future<List<Map<String, dynamic>>> getBookings() async {
     Database db = await instance.database;
 
@@ -70,9 +98,10 @@ class DatabaseHelper {
   }
 
   Future<int> deleteBooking(int bookingId) async {
-  Database db = await instance.database;
-  return await db.delete(tableHomebook, where: 'bookid = ?', whereArgs: [bookingId]);
-}
+    Database db = await instance.database;
+    return await db
+        .delete(tableHomebook, where: 'bookid = ?', whereArgs: [bookingId]);
+  }
 
   Future<int> deleteUser(int id) async {
     Database db = await instance.database;

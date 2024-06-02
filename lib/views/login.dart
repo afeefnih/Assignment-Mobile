@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 import '../admin/admin_tab.dart';
 import 'register.dart';
 import '../db/database_helper.dart';
-import 'user_tab.dart';
+import '../user/user_tab.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
