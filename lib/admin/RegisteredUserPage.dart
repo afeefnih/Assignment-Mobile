@@ -80,37 +80,41 @@ class _RegisteredUsersPageState extends State<RegisteredUsersPage> {
                 padding: const EdgeInsets.only(bottom: 8),
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ListTile(
-                      title: Text(_users[index]['name'] ?? 'No name'),
+                      title: Text(
+                        _users[index]['name'] ?? 'No name',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                              children: [
-                                Icon(Icons.person),
-                                SizedBox(width: 8),
-                                Text('User ID: ${_users[index]['userid'].toString()}'),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Icon(Icons.email),
-                                SizedBox(width: 8),
-                                Text('Email: ${_users[index]['email']}'),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Icon(Icons.phone),
-                                SizedBox(width: 8),
-                                Text('Phone: ${_users[index]['phone']}'),
-                              ],
-                            ),
+                            children: [
+                              Icon(Icons.person),
+                              SizedBox(width: 8),
+                              Text(
+                                  'User ID: ${_users[index]['userid'].toString()}'),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Icon(Icons.email),
+                              SizedBox(width: 8),
+                              Text('${_users[index]['email']}'),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Icon(Icons.phone),
+                              SizedBox(width: 8),
+                              Text('${_users[index]['phone']}'),
+                            ],
+                          ),
                         ],
                       ),
                       trailing: Row(

@@ -353,8 +353,8 @@ class _BookingFormState extends State<BookingForm> {
                                             homestypackage:
                                                 widget.homestay.label,
                                             numguest: _numGuests,
-                                            packageprice:
-                                                widget.homestay.price),
+                                            packageprice: widget.homestay.price,
+                                            id: widget.id),
                                       ),
                                     ),
                                   );

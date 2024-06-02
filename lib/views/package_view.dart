@@ -73,19 +73,27 @@ class PackageContent extends StatelessWidget {
                 const SizedBox(height: 20),
                 (id != null)
                     ? Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
                         child: SizedBox(
                           width: double.infinity,
                           child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: FutureBuilder<String>(
-                              future: fetchUserName(),
-                              builder: (context, snapshot) {
-                                final userName = snapshot.data ?? 'User';
-                                return Text(
-                                  'Welcome, $userName!',
-                                  style: Theme.of(context).textTheme.titleLarge,
-                                );
-                              },
+                            padding: const EdgeInsets.all(30.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                FutureBuilder<String>(
+                                  future: fetchUserName(),
+                                  builder: (context, snapshot) {
+                                    final userName = snapshot.data ?? 'User';
+                                    return Text(
+                                      'Welcome, $userName!',
+                                      style: Theme.of(context).textTheme.titleLarge,
+                                    );
+                                  },
+                                ),
+                                Text('Your home away from home awaits you.'),
+                              ],
                             ),
                           ),
                         ),
@@ -118,8 +126,9 @@ class PackageContent extends StatelessWidget {
   Widget buildHomestayCard(Homestay homestay) {
     return Card(
       clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
             width: double.infinity,
@@ -132,7 +141,7 @@ class PackageContent extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.fromLTRB(30, 13, 30, 15),
             child: Text(
               homestay.label,
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -169,7 +178,8 @@ class PackageContent extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(
                   homestay.label,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 18),
                 ),
               ),
               Text(homestay.detail),
@@ -185,7 +195,8 @@ class PackageContent extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => BookingForm(
-                        id: id!, homestay: homestay,
+                        id: id!,
+                        homestay: homestay,
                       ),
                     ),
                   );
