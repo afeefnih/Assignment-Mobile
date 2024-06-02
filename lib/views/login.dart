@@ -3,6 +3,7 @@ import 'package:sqflite/sqflite.dart'; // Import sq
 import 'register.dart'; // Import RegisterPage
 import '../db/database_helper.dart';
 import 'user_tab.dart';
+import '/admin/RegisteredUserPage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -30,13 +31,24 @@ class _LoginPageState extends State<LoginPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login Successful')),
         );
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => TabView(
+
+        // Check the username and navigate to the corresponding page
+        String username = _usernameController.text;
+        if (username == 'admin') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => RegisteredUsersPage()),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => TabView(
                     id: result.first['userid'],
-                  )), // Navigate to BookingPage1
-        );
+                  )),
+          );
+        }
+
+        
       } else {
         if (!mounted) return; // Ensure the widget is still mounted
         ScaffoldMessenger.of(context).showSnackBar(
