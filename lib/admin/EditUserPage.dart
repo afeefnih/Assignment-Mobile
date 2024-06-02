@@ -32,14 +32,25 @@ class _EditUserPageState extends State<EditUserPage> {
   void _saveUser() async {
     if (_formKey.currentState!.validate()) {
       DatabaseHelper db = DatabaseHelper.instance;
+      try {
+        await db.updateUser(widget.user['userid'], {
+          'name': _nameController.text,
+          'email': _emailController.text,
+          'phone': int.parse(_phoneController.text),
+          'username': _usernameController.text,
+          'password': _passwordController.text,
+        });
+        Navigator.pop(context, 'updated');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('User updated successfully')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString())),
+        );
+      }
 
-      await db.updateUser(widget.user['userid'], {
-        'name': _nameController.text,
-        'email': _emailController.text,
-        'phone': int.parse(_phoneController.text),
-        'password': _passwordController.text,
-      });
-      Navigator.pop(context, 'updated');
+      
     }
   }
 
@@ -79,7 +90,8 @@ class _EditUserPageState extends State<EditUserPage> {
                 const SizedBox(height: 10),
                 TextFormField(
                   controller: _nameController,
-                  decoration: InputDecoration(prefixIcon: Icon(Icons.person), hintText: 'Name'),
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.person), hintText: 'Name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a name';
@@ -92,7 +104,8 @@ class _EditUserPageState extends State<EditUserPage> {
                 const SizedBox(height: 10),
                 TextFormField(
                   controller: _emailController,
-                  decoration: InputDecoration(prefixIcon: Icon(Icons.email), hintText: 'Email'),
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.email), hintText: 'Email'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter an email';
@@ -108,7 +121,8 @@ class _EditUserPageState extends State<EditUserPage> {
                 const SizedBox(height: 10),
                 TextFormField(
                   controller: _phoneController,
-                  decoration: InputDecoration(prefixIcon: Icon(Icons.phone), hintText: 'Phone'),
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.phone), hintText: 'Phone'),
                   keyboardType: TextInputType.phone,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -125,7 +139,8 @@ class _EditUserPageState extends State<EditUserPage> {
                 const SizedBox(height: 10),
                 TextFormField(
                   controller: _usernameController,
-                  decoration: InputDecoration(prefixIcon: Icon(Icons.person), hintText: 'Username'),
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.person), hintText: 'Username'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a username';
@@ -138,7 +153,8 @@ class _EditUserPageState extends State<EditUserPage> {
                 const SizedBox(height: 10),
                 TextFormField(
                   controller: _passwordController,
-                  decoration: InputDecoration(prefixIcon: Icon(Icons.person), hintText: 'Password'),
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.person), hintText: 'Password'),
                   obscureText: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {

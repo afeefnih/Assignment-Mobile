@@ -35,20 +35,19 @@ class _LoginPageState extends State<LoginPage> {
         // Check the username and navigate to the corresponding page
         String username = _usernameController.text;
         if (username == 'admin') {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => AdminTabView()),
-          );
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => AdminTabView()),
+              (route) => false);
         } else {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => TabView(
-                    id: result.first['userid'],
-                  )),
-          );
-        }
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => TabView(
+                      id: result.first['userid'],
+                    )),
+              (route) => false);
 
-        
+        }
       } else {
         if (!mounted) return; // Ensure the widget is still mounted
         ScaffoldMessenger.of(context).showSnackBar(

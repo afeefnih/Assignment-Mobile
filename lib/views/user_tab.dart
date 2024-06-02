@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import '../user/booking_list.dart';
 import 'package_view.dart';
-import '/views/profile.dart';
+import '../user/profile_view.dart';
 
 
 
@@ -22,7 +23,7 @@ class _TabViewState extends State<TabView> {
     super.initState();
     tabs = [
       PackageViewUser(id: widget.id),
-      Container(color: Colors.green),
+      BookingTab(id: widget.id),
       ProfileTab(id: widget.id),
     ];
   }

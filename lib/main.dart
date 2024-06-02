@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
         colorScheme: const ColorScheme.light(
           primary: Color.fromARGB(255, 39, 35, 45),
           background: const Color.fromARGB(255, 88, 57, 45),
+          surface: Color.fromARGB(255, 255, 255, 255),
         ),
         dialogBackgroundColor: Color.fromARGB(255, 255, 255, 255),
         appBarTheme: const AppBarTheme(

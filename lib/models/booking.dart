@@ -1,4 +1,5 @@
 class Booking {
+  final int id;
   final DateTime bookdate;
   final DateTime checkindate;
   final DateTime checkoutdate;
@@ -7,7 +8,8 @@ class Booking {
   final double packageprice;
 
   Booking(
-      {required this.bookdate,
+      {required this.id,
+      required this.bookdate,
       required this.checkindate,
       required this.checkoutdate,
       required this.homestypackage,

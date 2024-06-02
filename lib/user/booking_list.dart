@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import '../db/database_helper.dart';
 
-class BookingUsersPage extends StatefulWidget {
+class BookingTab extends StatefulWidget {
+  final int id;
+
+  const BookingTab({super.key, required this.id});
   @override
-  _BookingUsersPageState createState() => _BookingUsersPageState();
+  _BookingTabState createState() => _BookingTabState();
 }
 
-class _BookingUsersPageState extends State<BookingUsersPage> {
+class _BookingTabState extends State<BookingTab> {
   List<Map<String, dynamic>> _bookings = [];
 
   @override
@@ -17,7 +20,8 @@ class _BookingUsersPageState extends State<BookingUsersPage> {
 
   void _loadBookings() async {
     DatabaseHelper db = DatabaseHelper.instance;
-    List<Map<String, dynamic>> bookings = await db.getBookings();
+    List<Map<String, dynamic>> bookings = await db.getBookingsForUser(
+        widget.id); // Replace userId with the specific user ID
     setState(() {
       _bookings = bookings;
     });
@@ -64,29 +68,17 @@ class _BookingUsersPageState extends State<BookingUsersPage> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ListTile(
-                      title: Text(
-                        _bookings[index]['name'].toString(),
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                      title: Row(
+                        children: [
+                          Icon(Icons.home),
+                          SizedBox(width: 8),
+                          Text(_bookings[index]['homestypackage'] ??
+                              'No package',style: const TextStyle(fontWeight: FontWeight.bold),),
+                        ],
                       ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Icon(Icons.person),
-                              SizedBox(width: 8),
-                              Text(
-                                  'User ID: ${_bookings[index]['userid'].toString()}'),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(Icons.home),
-                              SizedBox(width: 8),
-                              Text(_bookings[index]['homestypackage'] ??
-                                  'No package'),
-                            ],
-                          ),
                           Row(
                             children: [
                               Icon(Icons.calendar_today),

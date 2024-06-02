@@ -1,13 +1,14 @@
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
-  static final _databaseName = "homepackage.db";
-  static final _databaseVersion = 1;
+  static const _databaseName = "homepackage.db";
+  static const _databaseVersion = 1;
 
-  static final tableUsers = 'users';
-  static final tableHomebook = 'homebook';
-  static final tableAdmin = 'administrator';
+  static const tableUsers = 'users';
+  static const tableHomebook = 'homebook';
+  static const tableAdmin = 'administrator';
 
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
@@ -29,20 +30,23 @@ class DatabaseHelper {
 
   Future<int> insertBooking(
       int userid,
-      String bookdate,
-      String booktime,
-      String checkindate,
-      String checkoutdate,
+      DateTime bookdatetime,
+      DateTime checkindate,
+      DateTime checkoutdate,
       String homestypackage,
       int numguest,
       double packageprice) async {
     Database db = await instance.database;
+
+    DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+    DateFormat timeFormat = DateFormat('HH:mm:ss');
+
     return await db.insert(tableHomebook, {
       'userid': userid,
-      'bookdate': bookdate,
-      'booktime': booktime,
-      'checkindate': checkindate,
-      'checkoutdate': checkoutdate,
+      'bookdate': dateFormat.format(bookdatetime),
+      'booktime': timeFormat.format(bookdatetime),
+      'checkindate': dateFormat.format(checkindate),
+      'checkoutdate': dateFormat.format(checkoutdate),
       'homestypackage': homestypackage,
       'numguest': numguest,
       'packageprice': packageprice,
@@ -51,7 +55,18 @@ class DatabaseHelper {
 
   Future<List<Map<String, dynamic>>> getBookings() async {
     Database db = await instance.database;
-    return await db.query(tableHomebook);
+
+    return await db.rawQuery('''
+    SELECT $tableHomebook.*, $tableUsers.name as name
+    FROM $tableHomebook
+    INNER JOIN $tableUsers ON $tableHomebook.userid = $tableUsers.userid
+  ''');
+  }
+
+  Future<List<Map<String, dynamic>>> getBookingsForUser(int userId) async {
+    Database db = await instance.database;
+    return await db
+        .query(tableHomebook, where: 'userid = ?', whereArgs: [userId]);
   }
 
   Future<int> deleteUser(int id) async {
@@ -59,7 +74,6 @@ class DatabaseHelper {
     return await db.delete(tableUsers, where: 'userid =?', whereArgs: [id]);
   }
 
-  
   _initDatabase() async {
     String path = join(await getDatabasesPath(), _databaseName);
     return await openDatabase(path,
@@ -102,6 +116,27 @@ class DatabaseHelper {
     ''');
   }
 
+  Future<void> insertUser(Map<String, dynamic> user) async {
+    Database db = await instance.database;
+
+    // Check if the username already exists
+    String username = user['username'];
+    List<Map> result = await db.query(
+      tableUsers,
+      columns: ['userid'],
+      where: 'username = ?',
+      whereArgs: [username],
+    );
+
+    // If username exists, throw an exception
+    if (result.isNotEmpty) {
+      throw Exception('Username already exists');
+    }
+
+    // Insert the new user if the username is unique
+    await db.insert(tableUsers, user);
+  }
+
   Future<Map<String, dynamic>?> getUserById(int userid) async {
     Database db = await instance.database;
     List<Map<String, dynamic>> results =
@@ -116,6 +151,22 @@ class DatabaseHelper {
 
   Future<int> updateUser(int userid, Map<String, dynamic> user) async {
     Database db = await instance.database;
+
+    // Check if there is another user with the same username
+    String username = user['username'];
+    List<Map> result = await db.query(
+      'users',
+      columns: ['userid'],
+      where: 'username = ? AND userid != ?',
+      whereArgs: [username, userid],
+    );
+
+    // If there's a user with the same username, throw an exception
+    if (result.isNotEmpty) {
+      throw Exception('Username already exists');
+    }
+
+    // Proceed with the update if no duplicate is found
     return await db.update(
       'users',
       user,
