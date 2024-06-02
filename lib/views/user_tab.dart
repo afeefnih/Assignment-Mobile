@@ -41,7 +41,7 @@ class _TabViewState extends State<TabView> {
         unselectedItemColor: Colors.white,
         onTap: onTapped,
         currentIndex: currentTabIndex,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Home",

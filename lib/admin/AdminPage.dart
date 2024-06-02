@@ -37,7 +37,6 @@ class _AdminPageState extends State<AdminPage> {
   _updateUser(int id, String name, String email, String phone, String username,
       String password) async {
     DatabaseHelper dbhelper = DatabaseHelper.instance;
-    //await dbhelper.updateUser(id, name, email, phone, username, password);
     await dbhelper.updateUser(id, {
       'name': name,
       'email': email,

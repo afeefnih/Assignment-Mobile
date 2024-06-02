@@ -58,24 +58,6 @@ class DatabaseHelper {
     Database db = await instance.database;
     return await db.delete(tableUsers, where: 'userid =?', whereArgs: [id]);
   }
-/* 
-  Future<int> updateUser(int id, String name, String email, String phone,
-      String username, String password) async {
-    Database db = await instance.database;
-    return await db.update(
-      tableUsers,
-      {
-        'name': name,
-        'email': email,
-        'phone': phone,
-        'username': username,
-        'password': password,
-      },
-      where: 'userid =?',
-      whereArgs: [id],
-    );
-  } */
-  //////////////////////////////////
 
   
   _initDatabase() async {

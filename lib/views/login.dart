@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart'; // Import sq
-import 'register.dart'; // Import RegisterPage
+import 'package:sqflite/sqflite.dart';
+import '../admin/admin_tab.dart';
+import 'register.dart';
 import '../db/database_helper.dart';
 import 'user_tab.dart';
-import '/admin/RegisteredUserPage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -37,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
         if (username == 'admin') {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => RegisteredUsersPage()),
+            MaterialPageRoute(builder: (context) => AdminTabView()),
           );
         } else {
           Navigator.pushReplacement(

@@ -98,18 +98,21 @@ class _ProfileTabState extends State<ProfileTab> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProfilePage(id: widget.id),
-                          ),
-                        ).then((_) {
-                          _fetchUserInfo();
-                        });
-                      },
-                      child: const Text('Update Profile'),
+                    Container(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProfilePage(id: widget.id),
+                            ),
+                          ).then((_) {
+                            _fetchUserInfo();
+                          });
+                        },
+                        child: const Text('Update Profile'),
+                      ),
                     ),
                     const SizedBox(height: 10),
                     GestureDetector(

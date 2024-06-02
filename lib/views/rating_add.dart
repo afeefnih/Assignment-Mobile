@@ -4,14 +4,14 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 
 
-class BookingPage4 extends StatefulWidget {
-  const BookingPage4({super.key});
+class RatingAdd extends StatefulWidget {
+  const RatingAdd({super.key});
 
   @override
-  _BookingPage4State createState() => _BookingPage4State();
+  _RatingAddState createState() => _RatingAddState();
 }
 
-class _BookingPage4State extends State<BookingPage4> {
+class _RatingAddState extends State<RatingAdd> {
   final _controller = TextEditingController();
   double _rating = 0;
   List<Map<String, dynamic>> reviews = [];
@@ -91,7 +91,7 @@ class _BookingPage4State extends State<BookingPage4> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.white, //assign either here or to the container
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(

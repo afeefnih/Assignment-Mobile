@@ -1,13 +1,14 @@
+import 'package:assignment1/models/booking.dart';
+import 'package:assignment1/models/homestay.dart';
 import '../db/database_helper.dart';
-import '../models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import the intl package for date formatting
-import '../payment_view.dart';
+import 'booking_detail.dart';
 
 class BookingForm extends StatefulWidget {
   final int id;
-  final double price;
-  const BookingForm({super.key, required this.id, required this.price});
+  final Homestay homestay;
+  const BookingForm({super.key, required this.id, required this.homestay});
   @override
   _BookingFormState createState() => _BookingFormState();
 }
@@ -41,7 +42,7 @@ class _BookingFormState extends State<BookingForm> {
 
   final List<int> _numGuestsList = List.generate(10, (index) => index + 1);
   int _numGuests = 1;
-  DateTime? _selectedBookingDate;
+  DateTime? _selectedBookingDate = DateTime.now();
   DateTime? _selectedCheckInDate;
   DateTime? _selectedCheckOutDate;
   int _selectedRequestIndex = -1;
@@ -57,16 +58,14 @@ class _BookingFormState extends State<BookingForm> {
     );
 
     if (pickedDate != null) {
-      // If date is selected, show time picker
-      final TimeOfDay? pickedTime = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.now(),
-      );
-
-      if (pickedTime != null) {
-        // If time is also selected, update the date and time accordingly
-        setState(() {
-          if (fieldType == 'booking') {
+      if (fieldType == 'booking') {
+        // If date is selected, show time picker
+        final TimeOfDay? pickedTime = await showTimePicker(
+          context: context,
+          initialTime: TimeOfDay.now(),
+        );
+        if (pickedTime != null) {
+          setState(() {
             // Update booking date and time
             _selectedBookingDate = DateTime(
               pickedDate.year,
@@ -77,29 +76,29 @@ class _BookingFormState extends State<BookingForm> {
             );
             _bookingDateTimeController.text =
                 DateFormat('yyyy-MM-dd hh:mm a').format(_selectedBookingDate!);
-          } else if (fieldType == 'checkin') {
-            // Update check-in date and time
-            _selectedCheckInDate = DateTime(
-              pickedDate.year,
-              pickedDate.month,
-              pickedDate.day,
-              pickedTime.hour,
-              pickedTime.minute,
-            );
-            _checkInDateTimeController.text =
-                DateFormat('yyyy-MM-dd hh:mm a').format(_selectedCheckInDate!);
-          } else if (fieldType == 'checkout') {
-            // Update check-out date and time
-            _selectedCheckOutDate = DateTime(
-              pickedDate.year,
-              pickedDate.month,
-              pickedDate.day,
-              pickedTime.hour,
-              pickedTime.minute,
-            );
-            _checkOutDateTimeController.text =
-                DateFormat('yyyy-MM-dd hh:mm a').format(_selectedCheckOutDate!);
-          }
+          });
+        }
+      } else if (fieldType == 'checkin') {
+        setState(() {
+          // Update check-in date and time
+          _selectedCheckInDate = DateTime(
+            pickedDate.year,
+            pickedDate.month,
+            pickedDate.day,
+          );
+          _checkInDateTimeController.text =
+              DateFormat('yyyy-MM-dd').format(_selectedCheckInDate!);
+        });
+      } else if (fieldType == 'checkout') {
+        setState(() {
+          // Update check-out date and time
+          _selectedCheckOutDate = DateTime(
+            pickedDate.year,
+            pickedDate.month,
+            pickedDate.day,
+          );
+          _checkOutDateTimeController.text =
+              DateFormat('yyyy-MM-dd').format(_selectedCheckOutDate!);
         });
       }
     }
@@ -193,11 +192,13 @@ class _BookingFormState extends State<BookingForm> {
                   'Booking Information:',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
+                Text('Booking Date and Time'),
+                const SizedBox(height: 10),
                 TextFormField(
                   controller: _bookingDateTimeController,
                   decoration: InputDecoration(
-                    hintText: 'Booking Date and Time',
+                    hintText: 'Pick Date and Time',
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.calendar_today),
                       onPressed: () => _selectDate(context, 'booking'),
@@ -211,11 +212,13 @@ class _BookingFormState extends State<BookingForm> {
                   },
                   readOnly: true,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
+                Text('Check-in Date'),
+                const SizedBox(height: 10),
                 TextFormField(
                   controller: _checkInDateTimeController,
                   decoration: InputDecoration(
-                    hintText: 'Check-in Date',
+                    hintText: 'Pick Date',
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.calendar_today),
                       onPressed: () => _selectDate(context, 'checkin'),
@@ -229,11 +232,13 @@ class _BookingFormState extends State<BookingForm> {
                   },
                   readOnly: true,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
+                Text('Check-out Date'),
+                const SizedBox(height: 10),
                 TextFormField(
                   controller: _checkOutDateTimeController,
                   decoration: InputDecoration(
-                    hintText: 'Check-out Date',
+                    hintText: 'Pick Date',
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.calendar_today),
                       onPressed: () => _selectDate(context, 'checkout'),
@@ -242,10 +247,35 @@ class _BookingFormState extends State<BookingForm> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please select check-out date';
+                    } else if (value ==
+                        DateFormat('yyyy-MM-dd')
+                            .format(_selectedCheckInDate!)) {
+                      return 'Cant pick same as check-in';
                     }
                     return null;
                   },
                   readOnly: true,
+                ),
+                const SizedBox(height: 10),
+                Text('Number of Guests'),
+                const SizedBox(height: 10),
+                DropdownButtonFormField<int>(
+                  dropdownColor: Colors.white,
+                  value: _numGuests,
+                  items: _numGuestsList.map((int value) {
+                    return DropdownMenuItem<int>(
+                      value: value,
+                      child: Text(value.toString()),
+                    );
+                  }).toList(),
+                  onChanged: (int? value) {
+                    setState(() {
+                      _numGuests = value ?? 1;
+                    });
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Number of Guests',
+                  ),
                 ),
                 const SizedBox(height: 20),
                 const Text(
@@ -276,35 +306,9 @@ class _BookingFormState extends State<BookingForm> {
                       .toList(),
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  'Number of Guests:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                DropdownButtonFormField<int>(
-                  dropdownColor: Colors.white,
-                  value: _numGuests,
-                  items: _numGuestsList.map((int value) {
-                    return DropdownMenuItem<int>(
-                      value: value,
-                      child: Text(value.toString()),
-                    );
-                  }).toList(),
-                  onChanged: (int? value) {
-                    setState(() {
-                      _numGuests = value ?? 1;
-                    });
-                  },
-                  decoration: const InputDecoration(
-                    labelText: 'Number of Guests',
-                  ),
-                ),
-                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {
-                      // Calculate the number of days
-                      int numberOfDays = calculateNumberOfDays(
-                          _selectedCheckInDate!, _selectedCheckOutDate!);
                       // Additional Requests
                       String additionalRequest = _selectedRequestIndex != -1
                           ? 'Additional Details: ${_smoking[_selectedRequestIndex]}\n'
@@ -324,7 +328,10 @@ class _BookingFormState extends State<BookingForm> {
                                   children: userInfo,
                                 ),
                                 const SizedBox(height: 7),
-                                Text('No of Days: $numberOfDays'),
+                                Text(
+                                    'Check In: ${DateFormat('yyyy-MM-dd').format(_selectedCheckInDate!)}'),
+                                Text(
+                                    'Check Out: ${DateFormat('yyyy-MM-dd').format(_selectedCheckOutDate!)}'),
                                 Text('Number of Guests: $_numGuests'),
                                 const SizedBox(height: 7),
                                 Text(additionalRequest),
@@ -337,10 +344,17 @@ class _BookingFormState extends State<BookingForm> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => PaymentView(
-                                        // Data as arguments to send to next page.
-                                        user: User(numberOfDays, _numGuests),
-                                        price: widget.price,
+                                      builder: (context) => BookingDetail(
+                                        booking: Booking(
+                                            bookdate: _selectedBookingDate!,
+                                            checkindate: _selectedCheckInDate!,
+                                            checkoutdate:
+                                                _selectedCheckOutDate!,
+                                            homestypackage:
+                                                widget.homestay.label,
+                                            numguest: _numGuests,
+                                            packageprice:
+                                                widget.homestay.price),
                                       ),
                                     ),
                                   );
@@ -361,10 +375,5 @@ class _BookingFormState extends State<BookingForm> {
         ),
       ),
     );
-  }
-
-  // Add this method to calculate the number of days
-  int calculateNumberOfDays(DateTime checkIn, DateTime checkOut) {
-    return checkOut.difference(checkIn).inDays;
   }
 }

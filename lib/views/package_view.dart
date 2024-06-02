@@ -185,8 +185,7 @@ class PackageContent extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => BookingForm(
-                        id: id!,
-                        price: homestay.price,
+                        id: id!, homestay: homestay,
                       ),
                     ),
                   );
