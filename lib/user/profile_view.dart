@@ -1,6 +1,7 @@
 // profile_tab.dart
+import 'package:assignment1/views/welcome.dart';
 import 'package:flutter/material.dart';
-import '/views/profile_update.dart';
+import 'profile_update.dart';
 import '../db/database_helper.dart';
 
 class ProfileTab extends StatefulWidget {
@@ -32,6 +33,14 @@ class _ProfileTabState extends State<ProfileTab> {
     }
   }
 
+  void _logOut() {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => Welcome()),
+      (route) => route.settings.name == '/',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,37 +69,42 @@ class _ProfileTabState extends State<ProfileTab> {
         ),
         child: _userInfo != null
             ? SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                       child: Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(30.0),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Text('${_userInfo!['name']}',style: const TextStyle(fontWeight: FontWeight.bold),),
+                            const SizedBox(height: 10),
                             Row(
                               children: [
                                 Icon(Icons.person),
                                 SizedBox(width: 8),
-                                Text('Name: ${_userInfo!['name']}'),
+                                Text('User ID: ${_userInfo!['userid']}',),
                               ],
                             ),
+                            const SizedBox(height: 10),
                             Row(
                               children: [
                                 Icon(Icons.email),
                                 SizedBox(width: 8),
-                                Text('Email: ${_userInfo!['email']}'),
+                                Text('${_userInfo!['email']}'),
                               ],
                             ),
+                            const SizedBox(height: 10),
                             Row(
                               children: [
                                 Icon(Icons.phone),
                                 SizedBox(width: 8),
-                                Text('Phone: ${_userInfo!['phone']}'),
+                                Text('${_userInfo!['phone']}'),
                               ],
                             ),
                           ],
@@ -117,7 +131,7 @@ class _ProfileTabState extends State<ProfileTab> {
                     const SizedBox(height: 10),
                     GestureDetector(
                       onTap: () {
-                        // Add logout functionality
+                        _logOut();
                       },
                       child: Text(
                         'Logout',
@@ -130,7 +144,7 @@ class _ProfileTabState extends State<ProfileTab> {
                     ),
                   ],
                 ),
-            )
+              )
             : const Center(child: CircularProgressIndicator()),
       ),
     );

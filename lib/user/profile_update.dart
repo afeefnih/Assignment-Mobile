@@ -15,6 +15,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
@@ -40,39 +41,33 @@ class _ProfilePageState extends State<ProfilePage> {
         _nameController.text = user['name'] ?? '';
         _emailController.text = user['email'] ?? '';
         _phoneController.text = user['phone'].toString();
+        _usernameController.text = user['username'] ?? '';
         _passwordController.text = user['password'].toString();
       }
     });
   }
 
   void _updateProfile() async {
-  if (_formKey.currentState!.validate()) {
-    DatabaseHelper dbHelper = DatabaseHelper.instance;
-
-    try {
-      int rowsAffected = await dbHelper.updateUser(widget.id, {
-        'name': _nameController.text,
-        'email': _emailController.text,
-        'phone': int.parse(_phoneController.text),
-        'password': _passwordController.text,
-      });
-
-      if (rowsAffected > 0) {
+    if (_formKey.currentState!.validate()) {
+      DatabaseHelper dbHelper = DatabaseHelper.instance;
+      try {
+        await dbHelper.updateUser(widget.id, {
+          'name': _nameController.text,
+          'email': _emailController.text,
+          'phone': int.parse(_phoneController.text),
+          'username': _usernameController.text,
+          'password': _passwordController.text,
+        });
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Profile updated successfully')),
+          SnackBar(content: Text('User updated successfully')),
         );
-      } else {
+      } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to update profile')),
+          SnackBar(content: Text(e.toString())),
         );
       }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error updating profile: $e')),
-      );
     }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -105,10 +100,13 @@ class _ProfilePageState extends State<ProfilePage> {
             key: _formKey,
             child: ListView(
               children: [
+                const SizedBox(height: 10),
+                const Text('Name'),
+                const SizedBox(height: 10),
                 TextFormField(
                   controller: _nameController,
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.person), labelText: 'Name'),
+                  decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.person), hintText: 'Name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your name';
@@ -116,11 +114,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
+                const Text('Email'),
+                const SizedBox(height: 10),
                 TextFormField(
                   controller: _emailController,
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.email), labelText: 'Email'),
+                  decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.email), hintText: 'Email'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email';
@@ -129,11 +129,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
+                const Text('Phone'),
+                const SizedBox(height: 10),
                 TextFormField(
                   controller: _phoneController,
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.phone), labelText: 'Phone'),
+                  decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.phone), hintText: 'Phone'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your phone number';
@@ -142,11 +144,27 @@ class _ProfilePageState extends State<ProfilePage> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 30),
+                const Text('Username'),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _usernameController,
+                  decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.person), hintText: 'Username'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your username';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                const Text('Password'),
+                const SizedBox(height: 10),
                 TextFormField(
                   controller: _passwordController,
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.lock), labelText: 'Password'),
+                  decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.lock), hintText: 'Password'),
                   obscureText: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -157,10 +175,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                 ),
                 const SizedBox(height: 20),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: _updateProfile,
-                  child: Text('Update Profile'),
+                  child: const Text('Update Profile'),
                 ),
               ],
             ),

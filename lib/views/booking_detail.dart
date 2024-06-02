@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import '../db/database_helper.dart';
 import '../models/booking.dart';
 import 'rating_add.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,24 @@ class _BookingDetailState extends State<BookingDetail> {
         calculateNumberOfDays(
             widget.booking.checkindate, widget.booking.checkoutdate),
         widget.booking.numguest);
+  }
+
+  void _insertBookings() async {
+    int newBookingId = await DatabaseHelper.instance.insertBooking(
+      widget.booking.id, // User ID
+      widget.booking.bookdate, // Booking Date// Booking Time
+      widget.booking.checkindate, // Check-in Date
+      widget.booking.checkoutdate, // Check-out Date
+      widget.booking.homestypackage, // Home Type Package
+      widget.booking.numguest, // Number of Guests
+      (_payment - _discountAmount), // Package Price
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Booking inserted successfully with ID: $newBookingId'),
+      ),
+    );
   }
 
   @override
@@ -132,6 +151,7 @@ class _BookingDetailState extends State<BookingDetail> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
+                    _insertBookings();
                     Navigator.push(
                       context,
                       MaterialPageRoute(

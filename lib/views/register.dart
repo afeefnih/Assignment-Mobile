@@ -1,5 +1,4 @@
 import '../db/database_helper.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -17,18 +16,25 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void _register() async {
     if (_formKey.currentState!.validate()) {
-      Database db = await DatabaseHelper.instance.database;
-      await db.insert(DatabaseHelper.tableUsers, {
-        'name': _nameController.text,
-        'email': _emailController.text,
-        'phone': int.parse(_phoneController.text),
-        'username': _usernameController.text,
-        'password': _passwordController.text,
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registration Successful')),
-      );
-      Navigator.pop(context);
+      DatabaseHelper db = DatabaseHelper.instance;
+
+      try {
+        await db.insertUser({
+          'name': _nameController.text,
+          'email': _emailController.text,
+          'phone': int.parse(_phoneController.text),
+          'username': _usernameController.text,
+          'password': _passwordController.text,
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Registration Successful')),
+        );
+        Navigator.pop(context);
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString())),
+        );
+      }
     }
   }
 
@@ -36,7 +42,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Register'),
+        title: const Text('Register'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -74,7 +80,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 children: <Widget>[
                   TextFormField(
                     controller: _nameController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         prefixIcon: Icon(Icons.person), hintText: 'Name'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -86,7 +92,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(height: 20),
                   TextFormField(
                     controller: _emailController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         prefixIcon: Icon(Icons.email), hintText: 'Email'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -98,8 +104,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(height: 20),
                   TextFormField(
                     controller: _phoneController,
-                    decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.phone), hintText: 'Phone Number'),
+                    decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.phone),
+                        hintText: 'Phone Number'),
                     keyboardType: TextInputType.phone,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -111,7 +118,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(height: 20),
                   TextFormField(
                     controller: _usernameController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         prefixIcon: Icon(Icons.person), hintText: 'Username'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -123,7 +130,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(height: 20),
                   TextFormField(
                     controller: _passwordController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         prefixIcon: Icon(Icons.lock), hintText: 'Password'),
                     obscureText: true,
                     validator: (value) {
@@ -133,10 +140,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: _register,
-                    child: Text('Register'),
+                    child: const Text('Register'),
                   ),
                 ],
               ),
@@ -147,5 +154,3 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 }
-
-
