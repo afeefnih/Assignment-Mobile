@@ -61,16 +61,16 @@ class _BookingUsersPageState extends State<BookingUsersPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              child: Text('Registered Users'),
               onPressed: _viewRegisteredUsers,
+              child: const Text('Registered Users'),
             ),
             ElevatedButton(
-              child: Text('View Booking Users'),
-              onPressed: null, // no action needed here
+              onPressed: null,
+              child: Text('View Booking Users'), // no action needed here
             ),
             ElevatedButton(
-              child: Text('Log Out'),
               onPressed: _logOut,
+              child: const Text('Log Out'),
             ),
           ],
         ),

@@ -1,7 +1,5 @@
-import '../main.dart';
 import 'package:flutter/material.dart';
 import '../db/database_helper.dart';
-import 'BookingUsersPage.dart';
 import 'EditUserPage.dart';
 
 class RegisteredUsersPage extends StatefulWidget {
@@ -24,20 +22,6 @@ class _RegisteredUsersPageState extends State<RegisteredUsersPage> {
     setState(() {
       _users = users;
     });
-  }
-
-  void _viewBookingUsers() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => BookingUsersPage()),
-    );
-  }
-
-  void _logOut() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => MyApp()),
-    );
   }
 
   void _editUser(int index) async {
@@ -68,58 +52,90 @@ class _RegisteredUsersPageState extends State<RegisteredUsersPage> {
         title: Text('Registered Users'),
         automaticallyImplyLeading: false,
       ),
-      body: ListView.builder(
-        itemCount: _users.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(_users[index]['name'] ?? 'No name'),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('User ID: ${_users[index]['userid'].toString()}'),
-                Text('Email: ${_users[index]['email']}'),
-                Text('Phone: ${_users[index]['phone']}'),
-                Text('Username: ${_users[index]['username']}'),
-                Text('Password: ${_users[index]['password']}'),
-              ],
-            ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () {
-                    _editUser(index);
-                  },
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF4CAF50),
+              Color(0xFF8BC34A),
+              Color(0xFFCDDC39),
+            ],
+            stops: [0.1, 0.5, 0.9],
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ListView.builder(
+            itemCount: _users.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListTile(
+                      title: Text(_users[index]['name'] ?? 'No name'),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                              children: [
+                                Icon(Icons.person),
+                                SizedBox(width: 8),
+                                Text('User ID: ${_users[index]['userid'].toString()}'),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Icon(Icons.email),
+                                SizedBox(width: 8),
+                                Text('Email: ${_users[index]['email']}'),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Icon(Icons.phone),
+                                SizedBox(width: 8),
+                                Text('Phone: ${_users[index]['phone']}'),
+                              ],
+                            ),
+                        ],
+                      ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.edit),
+                            onPressed: () {
+                              _editUser(index);
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () {
+                              _deleteUser(index);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-                IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () {
-                    _deleteUser(index);
-                  },
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              child: Text('Registered Users'),
-              onPressed: null, // no action needed here
-            ),
-            ElevatedButton(
-              child: Text('View Booking Users'),
-              onPressed: _viewBookingUsers,
-            ),
-            ElevatedButton(
-              child: Text('Log Out'),
-              onPressed: _logOut,
-            ),
-          ],
+              );
+            },
+          ),
         ),
       ),
     );
