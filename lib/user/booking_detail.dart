@@ -1,7 +1,8 @@
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import '../db/database_helper.dart';
 import '../models/booking.dart';
-import 'rating_add.dart';
+import '../views/rating_add.dart';
 import 'package:flutter/material.dart';
 
 class BookingDetail extends StatefulWidget {
@@ -155,7 +156,7 @@ class _BookingDetailState extends State<BookingDetail> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const RatingAdd(),
+                        builder: (context) => RatingAdd(id: widget.booking.id,),
                       ),
                     );
                   },

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'welcome.dart';
-
-
-
+import '../user/user_tab.dart';
+import 'package:confetti/confetti.dart';
 
 class RatingAdd extends StatefulWidget {
-  const RatingAdd({super.key});
-  
+  const RatingAdd({super.key, required this.id});
+  final int id;
 
   @override
   _RatingAddState createState() => _RatingAddState();
@@ -17,6 +15,7 @@ class _RatingAddState extends State<RatingAdd> {
   final _controller = TextEditingController();
   double _rating = 0;
   List<Map<String, dynamic>> reviews = [];
+  late ConfettiController _confettiController;
 
   void _submitReview() {
     if (_controller.text.isNotEmpty && _rating > 0) {
@@ -57,9 +56,22 @@ class _RatingAddState extends State<RatingAdd> {
     }
   }
 
+  @override
+  void initState() {
+    super.initState();
+    _confettiController =
+        ConfettiController(duration: const Duration(seconds: 5));
+    _showConfettiAnimation();
+  }
+
+  @override
+  void dispose() {
+    _confettiController.dispose();
+    super.dispose();
+  }
+
   void _showConfettiAnimation() {
-    // Use a confetti package (e.g., confetti_flutter) to create a celebratory effect
-    // Implement confetti animation logic here
+    _confettiController.play();
   }
 
   @override
@@ -68,12 +80,15 @@ class _RatingAddState extends State<RatingAdd> {
       appBar: AppBar(
         title: const Text('Rating'),
         leading: IconButton(
-          icon: Image.asset('assets/log.png'),
+          icon: const Icon(Icons.home),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Welcome()),
-            );
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TabView(
+                          id: widget.id,
+                        )),
+                (route) => false);
           },
         ),
       ),
@@ -112,7 +127,8 @@ class _RatingAddState extends State<RatingAdd> {
                     children: [
                       const Text(
                         'Give Ratings:',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 10),
                       RatingBar.builder(
@@ -121,7 +137,8 @@ class _RatingAddState extends State<RatingAdd> {
                         direction: Axis.horizontal,
                         allowHalfRating: true,
                         itemCount: 5,
-                        itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        itemPadding:
+                            const EdgeInsets.symmetric(horizontal: 4.0),
                         itemBuilder: (context, _) => const Icon(
                           Icons.star,
                           size: 25,
@@ -136,7 +153,8 @@ class _RatingAddState extends State<RatingAdd> {
                       const SizedBox(height: 20),
                       const Text(
                         'Give Reviews:',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       TextField(
                         controller: _controller,
@@ -173,6 +191,38 @@ class _RatingAddState extends State<RatingAdd> {
                         );
                       },
                     ),
+              const SizedBox(height: 20),
+              Container(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TabView(
+                                  id: widget.id,
+                                  tabIndex: 1,
+                                )),
+                        (route) => false);
+                  },
+                  child: const Text('Go to Booking List'),
+                ),
+              ),
+              ConfettiWidget(
+                confettiController: _confettiController,
+                blastDirectionality: BlastDirectionality.explosive,
+                shouldLoop: false,
+                colors: const [
+                  Colors.green,
+                  Colors.blue,
+                  Colors.pink,
+                  Colors.orange,
+                  Colors.purple,
+                ],
+                emissionFrequency: 0.05,
+                numberOfParticles: 100,
+                gravity: 0.1,
+              ),
             ],
           ),
         ),
@@ -180,4 +230,3 @@ class _RatingAddState extends State<RatingAdd> {
     );
   }
 }
-
