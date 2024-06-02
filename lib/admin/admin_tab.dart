@@ -1,5 +1,3 @@
-import '/main.dart';
-
 import 'RegisteredUserPage.dart';
 import 'BookingUsersPage.dart';
 import 'package:flutter/material.dart';
@@ -38,9 +36,9 @@ class _AdminTabViewState extends State<AdminTabView> {
   }
 
   void _logOut() {
-    Navigator.push(
+    Navigator.popUntil(
       context,
-      MaterialPageRoute(builder: (context) => MyApp()),
+      ModalRoute.withName('/'),
     );
   }
 

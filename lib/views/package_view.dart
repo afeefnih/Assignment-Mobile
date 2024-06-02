@@ -191,7 +191,7 @@ class PackageContent extends StatelessWidget {
                   );
                 } else {
                   Navigator.pop(context);
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => LoginPage()),
                   );
