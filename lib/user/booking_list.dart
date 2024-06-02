@@ -1,3 +1,7 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
+
 import '../db/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'booking_update.dart';
@@ -116,9 +120,13 @@ class _BookingTabState extends State<BookingTab> {
                         children: [
                           Icon(Icons.home),
                           SizedBox(width: 8),
-                          Text(
-                            _bookings[index]['homestypackage'] ?? 'No package',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          Flexible(
+                            child: Text(
+                              _bookings[index]['homestypackage'] ?? 'No package',
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                              overflow: TextOverflow.visible,
+                              softWrap: false,
+                            ),
                           ),
                         ],
                       ),
