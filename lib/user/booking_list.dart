@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import '../db/database_helper.dart';
+import 'package:flutter/material.dart';
 
 class BookingTab extends StatefulWidget {
   final int id;
@@ -26,6 +26,38 @@ class _BookingTabState extends State<BookingTab> {
       _bookings = bookings;
     });
   }
+
+void _deleteBooking(int index) async {
+  // Create a mutable copy of the bookings list
+  List<Map<String, dynamic>> mutableBookings = List.from(_bookings);
+
+  // Get the booking ID to be deleted
+  int bookingId = _bookings[index]['bookid'];
+
+  // Delete the booking from the database
+  DatabaseHelper db = DatabaseHelper.instance;
+  int deletedRows = await db.deleteBooking(bookingId);
+
+  if (deletedRows > 0) {
+    // Show snackbar with a message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Booking deleted successfully'),
+        duration: Duration(seconds: 2),
+        
+      ),
+    );
+
+    // Remove the booking from the mutable list
+    mutableBookings.removeAt(index);
+
+    // Update the state with the modified list
+    setState(() {
+      _bookings = mutableBookings;
+    });
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +104,10 @@ class _BookingTabState extends State<BookingTab> {
                         children: [
                           Icon(Icons.home),
                           SizedBox(width: 8),
-                          Text(_bookings[index]['homestypackage'] ??
-                              'No package',style: const TextStyle(fontWeight: FontWeight.bold),),
+                          Text(
+                            _bookings[index]['homestypackage'] ?? 'No package',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
                         ],
                       ),
                       subtitle: Column(
@@ -100,7 +134,7 @@ class _BookingTabState extends State<BookingTab> {
                           IconButton(
                             icon: Icon(Icons.delete),
                             onPressed: () {
-                              //_deleteUser(index);
+                               _deleteBooking(index);
                             },
                           ),
                         ],
