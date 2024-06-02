@@ -1,5 +1,8 @@
+import '../models/booking.dart';
+import '../models/homestay.dart';
 import '../db/database_helper.dart';
 import 'package:flutter/material.dart';
+import '../user/edit_booking_page.dart';
 
 class BookingTab extends StatefulWidget {
   final int id;
@@ -27,37 +30,48 @@ class _BookingTabState extends State<BookingTab> {
     });
   }
 
-void _deleteBooking(int index) async {
-  // Create a mutable copy of the bookings list
-  List<Map<String, dynamic>> mutableBookings = List.from(_bookings);
-
-  // Get the booking ID to be deleted
-  int bookingId = _bookings[index]['bookid'];
-
-  // Delete the booking from the database
-  DatabaseHelper db = DatabaseHelper.instance;
-  int deletedRows = await db.deleteBooking(bookingId);
-
-  if (deletedRows > 0) {
-    // Show snackbar with a message
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Booking deleted successfully'),
-        duration: Duration(seconds: 2),
-        
+  void _editBooking(int index) {
+    // Navigate to the EditBookingPage for editing the booking details
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditBookingPage(
+          id: widget.id,
+          bookingDetails: _bookings[index],
+        ),
       ),
     );
-
-    // Remove the booking from the mutable list
-    mutableBookings.removeAt(index);
-
-    // Update the state with the modified list
-    setState(() {
-      _bookings = mutableBookings;
-    });
   }
-}
 
+  void _deleteBooking(int index) async {
+    // Create a mutable copy of the bookings list
+    List<Map<String, dynamic>> mutableBookings = List.from(_bookings);
+
+    // Get the booking ID to be deleted
+    int bookingId = _bookings[index]['bookid'];
+
+    // Delete the booking from the database
+    DatabaseHelper db = DatabaseHelper.instance;
+    int deletedRows = await db.deleteBooking(bookingId);
+
+    if (deletedRows > 0) {
+      // Show snackbar with a message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Booking deleted successfully'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+
+      // Remove the booking from the mutable list
+      mutableBookings.removeAt(index);
+
+      // Update the state with the modified list
+      setState(() {
+        _bookings = mutableBookings;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,13 +142,13 @@ void _deleteBooking(int index) async {
                           IconButton(
                             icon: Icon(Icons.edit),
                             onPressed: () {
-                              //_editUser(index);
+                              _editBooking(index); // Call _editBooking method with the index
                             },
                           ),
                           IconButton(
                             icon: Icon(Icons.delete),
                             onPressed: () {
-                               _deleteBooking(index);
+                              _deleteBooking(index);
                             },
                           ),
                         ],
