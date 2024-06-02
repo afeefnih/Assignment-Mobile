@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'welcome.dart';
 
 
 
 
 class RatingAdd extends StatefulWidget {
   const RatingAdd({super.key});
+  
 
   @override
   _RatingAddState createState() => _RatingAddState();
@@ -65,6 +67,15 @@ class _RatingAddState extends State<RatingAdd> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Rating'),
+        leading: IconButton(
+          icon: Image.asset('assets/log.png'),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Welcome()),
+            );
+          },
+        ),
       ),
       body: Container(
         height: double.infinity,
@@ -169,3 +180,4 @@ class _RatingAddState extends State<RatingAdd> {
     );
   }
 }
+
