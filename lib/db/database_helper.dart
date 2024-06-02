@@ -69,6 +69,11 @@ class DatabaseHelper {
         .query(tableHomebook, where: 'userid = ?', whereArgs: [userId]);
   }
 
+  Future<int> deleteBooking(int bookingId) async {
+  Database db = await instance.database;
+  return await db.delete(tableHomebook, where: 'bookid = ?', whereArgs: [bookingId]);
+}
+
   Future<int> deleteUser(int id) async {
     Database db = await instance.database;
     return await db.delete(tableUsers, where: 'userid =?', whereArgs: [id]);
