@@ -1,17 +1,17 @@
-import 'user.dart';
+import 'models/user.dart';
 import 'booking_page_4.dart';
 import 'package:flutter/material.dart';
 
-class BookingPage3 extends StatefulWidget {
-  const BookingPage3({super.key, required this.user, required this.price});
+class PaymentView extends StatefulWidget {
+  const PaymentView({super.key, required this.user, required this.price});
   final double price;
   final User user;
 
   @override
-  _BookingPage3State createState() => _BookingPage3State();
+  _PaymentViewState createState() => _PaymentViewState();
 }
 
-class _BookingPage3State extends State<BookingPage3> {
+class _PaymentViewState extends State<PaymentView> {
   final TextEditingController _discountCodeController = TextEditingController();
 
   double _discountAmount = 0;
@@ -32,15 +32,20 @@ class _BookingPage3State extends State<BookingPage3> {
         title: const Text('Payment Details'),
       ),
       body: Container(
-        decoration: BoxDecoration(
-          // Add a calm background color
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.blue[200]!,
-              Colors.white,
+              Color(0xFF4CAF50),
+              Color(0xFF8BC34A),
+              Color(0xFFCDDC39),
             ],
+            stops: [0.1, 0.5, 0.9],
           ),
         ),
         child: Padding(
@@ -49,10 +54,9 @@ class _BookingPage3State extends State<BookingPage3> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                //color: Colors.white,
                 decoration: BoxDecoration(
-                  color: Colors.white, //assign either here or to the container
-                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -67,8 +71,7 @@ class _BookingPage3State extends State<BookingPage3> {
                       TextField(
                         controller: _discountCodeController,
                         decoration:
-                            const InputDecoration(labelText: 'Discount Code'),
-                        // Implement validation and discount code functionality
+                            const InputDecoration(hintText: 'Enter code here', border: OutlineInputBorder()),
                       ),
                       const SizedBox(height: 10),
                       Row(

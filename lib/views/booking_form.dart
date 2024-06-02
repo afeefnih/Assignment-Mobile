@@ -1,23 +1,43 @@
-import 'user.dart';
-import 'main.dart';
+import '../db/database_helper.dart';
+import '../models/user.dart';
 import 'package:flutter/material.dart';
-import 'booking_page_2.dart'; // Import BookingPage2
 import 'package:intl/intl.dart'; // Import the intl package for date formatting
+import '../payment_view.dart';
 
-class BookingPage1 extends StatefulWidget {
+class BookingForm extends StatefulWidget {
+  final int id;
+  final double price;
+  const BookingForm({super.key, required this.id, required this.price});
   @override
-  _BookingPage1State createState() => _BookingPage1State();
+  _BookingFormState createState() => _BookingFormState();
 }
 
-class _BookingPage1State extends State<BookingPage1> {
+class _BookingFormState extends State<BookingForm> {
+  Map<String, dynamic>? _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserInfo();
+  }
+
+  Future<void> _fetchUserInfo() async {
+    DatabaseHelper dbHelper = DatabaseHelper.instance;
+    Map<String, dynamic>? user = await dbHelper.getUserById(widget.id);
+    setState(() {
+      _user = user;
+    });
+  }
+
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _bookingDateTimeController = TextEditingController();
-  final TextEditingController _checkInDateTimeController = TextEditingController();
-  final TextEditingController _checkOutDateTimeController = TextEditingController();
+  final TextEditingController _bookingDateTimeController =
+      TextEditingController(
+    text: DateFormat('yyyy-MM-dd hh:mm a').format(DateTime.now()),
+  );
+  final TextEditingController _checkInDateTimeController =
+      TextEditingController();
+  final TextEditingController _checkOutDateTimeController =
+      TextEditingController();
 
   final List<int> _numGuestsList = List.generate(10, (index) => index + 1);
   int _numGuests = 1;
@@ -36,14 +56,14 @@ class _BookingPage1State extends State<BookingPage1> {
       lastDate: DateTime(2101),
     );
 
-    if (pickedDate!= null) {
+    if (pickedDate != null) {
       // If date is selected, show time picker
       final TimeOfDay? pickedTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(),
       );
 
-      if (pickedTime!= null) {
+      if (pickedTime != null) {
         // If time is also selected, update the date and time accordingly
         setState(() {
           if (fieldType == 'booking') {
@@ -87,24 +107,52 @@ class _BookingPage1State extends State<BookingPage1> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> userInfo = [];
+
+    if (_user != null) {
+      userInfo = [
+        Row(
+          children: [
+            Icon(Icons.person),
+            SizedBox(width: 8),
+            Text('Name: ${_user!['name']}'),
+          ],
+        ),
+        Row(
+          children: [
+            Icon(Icons.email),
+            SizedBox(width: 8),
+            Text('Email: ${_user!['email']}'),
+          ],
+        ),
+        Row(
+          children: [
+            Icon(Icons.phone),
+            SizedBox(width: 8),
+            Text('Phone: ${_user!['phone']}'),
+          ],
+        ),
+      ];
+    }
+
     return Scaffold(
-    appBar: AppBar(
-        title: Text('Homestay Booking System'),
-        backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text('Booking Form'),
         leading: IconButton(
-          icon: Image.asset('assets/icon.jpg'),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            );
+            Navigator.pop(context);
           },
         ),
       ),
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -127,66 +175,29 @@ class _BookingPage1State extends State<BookingPage1> {
                   'User Details:',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                TextFormField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(labelText: 'Name'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your name';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _addressController,
-                  decoration: const InputDecoration(labelText: 'Address'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your address';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _phoneController,
-                  decoration: const InputDecoration(labelText: 'Phone No'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your phone number';
-                    }
-                    // Validate phone number format (10 digits)
-                    if (!RegExp(r'^[0-9]{10}$').hasMatch(value)) {
-                      return 'Please enter a valid phone number';
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.phone,
-                ),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(labelText: 'Email'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
-                    }
-                    // Validate email format
-                    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                        .hasMatch(value)) {
-                      return 'Please enter a valid email address';
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.emailAddress,
+                const SizedBox(height: 20),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: userInfo,
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 const Text(
                   'Booking Information:',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _bookingDateTimeController,
                   decoration: InputDecoration(
-                    labelText: 'Booking Date and Time',
+                    hintText: 'Booking Date and Time',
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.calendar_today),
                       onPressed: () => _selectDate(context, 'booking'),
@@ -200,10 +211,11 @@ class _BookingPage1State extends State<BookingPage1> {
                   },
                   readOnly: true,
                 ),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _checkInDateTimeController,
                   decoration: InputDecoration(
-                    labelText: 'Check-in Date',
+                    hintText: 'Check-in Date',
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.calendar_today),
                       onPressed: () => _selectDate(context, 'checkin'),
@@ -217,10 +229,11 @@ class _BookingPage1State extends State<BookingPage1> {
                   },
                   readOnly: true,
                 ),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _checkOutDateTimeController,
                   decoration: InputDecoration(
-                    labelText: 'Check-out Date',
+                    hintText: 'Check-out Date',
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.calendar_today),
                       onPressed: () => _selectDate(context, 'checkout'),
@@ -245,21 +258,30 @@ class _BookingPage1State extends State<BookingPage1> {
                       .asMap()
                       .entries
                       .map(
-                        (MapEntry<int, String> entry) => RadioListTile<int>(
-                          title: Text(entry.value),
-                          value: entry.key,
-                          groupValue: _selectedRequestIndex,
-                          onChanged: (int? value) {
-                            setState(() {
-                              _selectedRequestIndex = value ?? -1;
-                            });
-                          },
+                        (MapEntry<int, String> entry) => SizedBox(
+                          height: 30,
+                          child: RadioListTile<int>(
+                            title: Text(entry.value),
+                            value: entry.key,
+                            groupValue: _selectedRequestIndex,
+                            onChanged: (int? value) {
+                              setState(() {
+                                _selectedRequestIndex = value ?? -1;
+                              });
+                            },
+                            contentPadding: EdgeInsets.all(0),
+                          ),
                         ),
                       )
                       .toList(),
                 ),
                 const SizedBox(height: 20),
+                const Text(
+                  'Number of Guests:',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
                 DropdownButtonFormField<int>(
+                  dropdownColor: Colors.white,
                   value: _numGuests,
                   items: _numGuestsList.map((int value) {
                     return DropdownMenuItem<int>(
@@ -278,83 +300,57 @@ class _BookingPage1State extends State<BookingPage1> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.brown),
-                      foregroundColor: MaterialStateProperty.all(Colors.white),
-                      padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
-                    ),
-                    onPressed: () {
+                  onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {
                       // Calculate the number of days
                       int numberOfDays = calculateNumberOfDays(
                           _selectedCheckInDate!, _selectedCheckOutDate!);
-
-                      // Extract user information
-                      String userInfo = 'User Information:\n';
-                      userInfo += 'Name: ${_nameController.text}\n';
-                      userInfo += 'Address: ${_addressController.text}\n';
-                      userInfo += 'Phone No: ${_phoneController.text}\n';
-                      userInfo += 'Email: ${_emailController.text}\n';
-                      userInfo += 'No of Days: $numberOfDays\n';
-
                       // Additional Requests
                       String additionalRequest = _selectedRequestIndex != -1
                           ? 'Additional Details: ${_smoking[_selectedRequestIndex]}\n'
                           : '';
 
                       // Display user information and additional requests
-                                                showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: const Text('Booking Summary'),
-                                  content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(userInfo),
-                                      const SizedBox(height: 10),
-                                      Text(additionalRequest),
-                                      const SizedBox(height: 10),
-                                      Text('Number of Guests: $_numGuests'),
-                                    ],
-                                  ),
-                                  actions: [
-                          ElevatedButton(
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
-                                  if (states.contains(MaterialState.pressed)) {
-                                    return Colors.brown; // Color when button is pressed
-                                  }
-                                  return Colors.white; // Default color
-                                }),
-                                foregroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
-                                  if (states.contains(MaterialState.pressed)) {
-                                    return Colors.white; // Text color when button is pressed
-                                  }
-                                  return Colors.brown; // Default text color
-                                }),
-                                padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
-                              ),
-                              onPressed: () {
-                                Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => BookingPage2(
-                                      // Data as arguments to send to next page.
-                                      user: User(numberOfDays, _numGuests),
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: const Text('Next'),
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Booking Summary'),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Column(
+                                  children: userInfo,
+                                ),
+                                const SizedBox(height: 7),
+                                Text('No of Days: $numberOfDays'),
+                                Text('Number of Guests: $_numGuests'),
+                                const SizedBox(height: 7),
+                                Text(additionalRequest),
+                              ],
                             ),
-                          ],
-                        );
-                      },
-                    );
-
+                            actions: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PaymentView(
+                                        // Data as arguments to send to next page.
+                                        user: User(numberOfDays, _numGuests),
+                                        price: widget.price,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: const Text('Next'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     }
                   },
                   child: const Text('Next'),
@@ -372,5 +368,3 @@ class _BookingPage1State extends State<BookingPage1> {
     return checkOut.difference(checkIn).inDays;
   }
 }
-
-

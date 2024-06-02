@@ -68,15 +68,20 @@ class _BookingPage4State extends State<BookingPage4> {
       ),
       body: Container(
         height: double.infinity,
-        decoration: BoxDecoration(
-          // Add a calm background color
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.blue[200]!,
-              Colors.white,
+              Color(0xFF4CAF50),
+              Color(0xFF8BC34A),
+              Color(0xFFCDDC39),
             ],
+            stops: [0.1, 0.5, 0.9],
           ),
         ),
         child: SingleChildScrollView(
@@ -87,7 +92,7 @@ class _BookingPage4State extends State<BookingPage4> {
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white, //assign either here or to the container
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),

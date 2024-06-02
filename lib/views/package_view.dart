@@ -1,35 +1,58 @@
-import 'user.dart';
-import 'homestay.dart';
-import 'login_page.dart';
-import 'booking_page_3.dart';
+import 'package:assignment1/views/booking_form.dart';
+import '../db/database_helper.dart';
+import '../models/homestay.dart';
+import 'login.dart';
 import 'package:flutter/material.dart';
-import 'main.dart';
 
-class BookingPage2 extends StatelessWidget {
-  final User? user;
-
-  const BookingPage2({Key? key, this.user}) : super(key: key);
+class PackageView extends StatelessWidget {
+  const PackageView({super.key, this.id});
+  final int? id;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Homestay Details'),
-        backgroundColor: Colors.white,
+        title: const Text('Homestay Package'),
         leading: IconButton(
-          icon: Image.asset('assets/icon.jpg'),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            );
+            Navigator.pop(context);
           },
         ),
       ),
+      body: PackageContent(
+        id: id,
+      ),
+    );
+  }
+}
+
+class PackageContent extends StatelessWidget {
+  final int? id;
+  const PackageContent({Key? key, this.id}) : super(key: key);
+
+  Future<String> fetchUserName() async {
+    DatabaseHelper dbHelper = DatabaseHelper.instance;
+    Map<String, dynamic>? user = await dbHelper.getUserById(id!);
+
+    if (user != null && user.containsKey('name')) {
+      return user['name'];
+    } else {
+      return 'User not found';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -42,13 +65,35 @@ class BookingPage2 extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 10),
-              Expanded(
-                child: ListView.builder(
+          padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20),
+                (id != null)
+                    ? Card(
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: FutureBuilder<String>(
+                              future: fetchUserName(),
+                              builder: (context, snapshot) {
+                                final userName = snapshot.data ?? 'User';
+                                return Text(
+                                  'Welcome, $userName!',
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: Homestay.samples.length,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
@@ -62,8 +107,8 @@ class BookingPage2 extends StatelessWidget {
                     );
                   },
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -90,7 +135,7 @@ class BookingPage2 extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               homestay.label,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -103,7 +148,8 @@ class BookingPage2 extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           content: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -123,7 +169,7 @@ class BookingPage2 extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(
                   homestay.label,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
               ),
               Text(homestay.detail),
@@ -132,16 +178,14 @@ class BookingPage2 extends StatelessWidget {
           ),
           actions: [
             ElevatedButton(
-              style: buttonStyle,
               onPressed: () {
-                if (user != null) {
+                if (id != null) {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => BookingPage3(
-                        // Data as arguments to send to the next page.
-                        user: user!,
+                      builder: (context) => BookingForm(
+                        id: id!,
                         price: homestay.price,
                       ),
                     ),
@@ -154,14 +198,13 @@ class BookingPage2 extends StatelessWidget {
                   );
                 }
               },
-              child: Text('Choose'),
+              child: const Text('Choose'),
             ),
             ElevatedButton(
-              style: buttonStyle,
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('Close'),
+              child: const Text('Close'),
             ),
           ],
         );
