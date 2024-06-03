@@ -20,33 +20,39 @@ class _LoginPageState extends State<LoginPage> {
   void _login() async {
     if (_formKey.currentState!.validate()) {
       Database db = await DatabaseHelper.instance.database;
+
+      List<Map<String, dynamic>> adminResult = await db.query(
+        DatabaseHelper.tableAdmin,
+        where: 'username = ? AND password = ?',
+        whereArgs: [_usernameController.text, _passwordController.text],
+      );
+
       List<Map<String, dynamic>> result = await db.query(
         DatabaseHelper.tableUsers,
         where: 'username =? AND password =?',
         whereArgs: [_usernameController.text, _passwordController.text],
       );
 
-      if (result.isNotEmpty) {
+      if (result.isNotEmpty || adminResult.isNotEmpty) {
         if (!mounted) return; // Ensure the widget is still mounted
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login Successful')),
         );
 
         // Check the username and navigate to the corresponding page
-        String username = _usernameController.text;
-        if (username == 'admin') {
+        if (adminResult.isNotEmpty) {
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => AdminTabView()),
+              MaterialPageRoute(builder: (context) => const AdminTabView()),
               (route) => false);
         } else {
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => TabView(
-                      id: result.first['userid'],
-                    )),
+              MaterialPageRoute(
+                  builder: (context) => TabView(
+                        id: result.first['userid'],
+                      )),
               (route) => false);
-
         }
       } else {
         if (!mounted) return; // Ensure the widget is still mounted

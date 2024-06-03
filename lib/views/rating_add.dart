@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import '../db/database_helper.dart';
 import '../user/user_tab.dart';
 import 'package:confetti/confetti.dart';
 
 class RatingAdd extends StatefulWidget {
-  const RatingAdd({super.key, required this.id});
+  const RatingAdd({super.key, required this.id, required this.homestay});
+  final String homestay;
   final int id;
 
   @override
@@ -17,13 +19,28 @@ class _RatingAddState extends State<RatingAdd> {
   List<Map<String, dynamic>> reviews = [];
   late ConfettiController _confettiController;
 
+  void _getRating() async {
+    DatabaseHelper db = DatabaseHelper.instance;
+    List<Map<String, dynamic>> result =
+        await db.getRatingsByHomestay(widget.homestay);
+
+    setState(() {
+      reviews = result
+          .map((row) => {'rating': row['rating'], 'text': row['review']})
+          .toList();
+    });
+  }
+
+  void _insertRating(double rating, String review) async {
+    DatabaseHelper db = DatabaseHelper.instance;
+    await db.insertRating(widget.homestay, rating, review);
+  }
+
   void _submitReview() {
     if (_controller.text.isNotEmpty && _rating > 0) {
+      _insertRating(_rating, _controller.text);
+      _getRating();
       setState(() {
-        reviews.add({
-          'rating': _rating,
-          'text': _controller.text,
-        });
         _controller.clear();
         _rating = 0; // Reset rating after submission
       });
@@ -59,6 +76,7 @@ class _RatingAddState extends State<RatingAdd> {
   @override
   void initState() {
     super.initState();
+    _getRating();
     _confettiController =
         ConfettiController(duration: const Duration(seconds: 5));
     _showConfettiAnimation();
@@ -185,9 +203,36 @@ class _RatingAddState extends State<RatingAdd> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: reviews.length,
                       itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(reviews[index]['text']),
-                          subtitle: Text('${reviews[index]['rating']} Stars'),
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: ListTile(
+                              title: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text('${reviews[index]['rating']}'),
+                                  const Icon(
+                                    Icons.star,
+                                    color: Color.fromARGB(255, 255, 157, 0),
+                                    size: 16,
+                                  ),
+                                ],
+                              ),
+                              subtitle: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      '${reviews[index]['text']}',
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         );
                       },
                     ),
