@@ -21,11 +21,6 @@ git clone https://github.com/afeefnih/Assignment-Mobile.git
 ```
 or use https://desktop.github.com/
 
-## Screenshot
-
-<img src="flutter_01.png" alt="Alt text" width="300">
-<img src="flutter_02.png" alt="Alt text" width="300">
-<img src="flutter_03.png" alt="Alt text" width="300">
 
 ## Requirement
 
@@ -38,3 +33,9 @@ or use https://desktop.github.com/
 | &#10004; | Page 4 (Registered user) <br> 1. View booking date and time. <br> 2. View the check-in date, check-out date, homestay package, number of guests, and total price <br> 3. Update and delete the booking date, check-in/check-out date, homestay package and number of guests |
 |  | **Administrator** |
 | &#10004; | 1. Login (username and password) <br> 2. View all registered users (Name, homestay package, book date/time, check-in date, check-out date) <br> 3. Update and Delete registered users <br> 4. Logout |
+
+## Screenshot
+
+<img src="flutter_01.png" alt="Alt text" width="300">
+<img src="flutter_02.png" alt="Alt text" width="300">
+<img src="flutter_03.png" alt="Alt text" width="300">
