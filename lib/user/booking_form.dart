@@ -274,6 +274,7 @@ class _BookingFormState extends State<BookingForm> {
                     });
                   },
                   decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.group),
                     labelText: 'Number of Guests',
                   ),
                 ),
@@ -305,69 +306,72 @@ class _BookingFormState extends State<BookingForm> {
                       )
                       .toList(),
                 ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      // Additional Requests
-                      String additionalRequest = _selectedRequestIndex != -1
-                          ? 'Additional Details: ${_smoking[_selectedRequestIndex]}\n'
-                          : '';
-
-                      // Display user information and additional requests
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text('Booking Summary'),
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Column(
-                                  children: userInfo,
-                                ),
-                                const SizedBox(height: 7),
-                                Text(
-                                    'Check In: ${DateFormat('yyyy-MM-dd').format(_selectedCheckInDate!)}'),
-                                Text(
-                                    'Check Out: ${DateFormat('yyyy-MM-dd').format(_selectedCheckOutDate!)}'),
-                                Text('Number of Guests: $_numGuests'),
-                                const SizedBox(height: 7),
-                                Text(additionalRequest),
-                              ],
-                            ),
-                            actions: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => BookingDetail(
-                                        booking: Booking(
-                                            bookdate: _selectedBookingDate!,
-                                            checkindate: _selectedCheckInDate!,
-                                            checkoutdate:
-                                                _selectedCheckOutDate!,
-                                            homestypackage:
-                                                widget.homestay.label,
-                                            numguest: _numGuests,
-                                            packageprice: widget.homestay.price,
-                                            id: widget.id),
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: const Text('Next'),
+                const SizedBox(height: 30),
+                Container(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState?.validate() ?? false) {
+                        // Additional Requests
+                        String additionalRequest = _selectedRequestIndex != -1
+                            ? 'Additional Details: ${_smoking[_selectedRequestIndex]}\n'
+                            : '';
+                  
+                        // Display user information and additional requests
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Booking Summary'),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    children: userInfo,
+                                  ),
+                                  const SizedBox(height: 7),
+                                  Text(
+                                      'Check In: ${DateFormat('yyyy-MM-dd').format(_selectedCheckInDate!)}'),
+                                  Text(
+                                      'Check Out: ${DateFormat('yyyy-MM-dd').format(_selectedCheckOutDate!)}'),
+                                  Text('Number of Guests: $_numGuests'),
+                                  const SizedBox(height: 7),
+                                  Text(additionalRequest),
+                                ],
                               ),
-                            ],
-                          );
-                        },
-                      );
-                    }
-                  },
-                  child: const Text('Next'),
+                              actions: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => BookingDetail(
+                                          booking: Booking(
+                                              bookdate: _selectedBookingDate!,
+                                              checkindate: _selectedCheckInDate!,
+                                              checkoutdate:
+                                                  _selectedCheckOutDate!,
+                                              homestypackage:
+                                                  widget.homestay.label,
+                                              numguest: _numGuests,
+                                              packageprice: widget.homestay.price,
+                                              id: widget.id),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text('Next'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+                    },
+                    child: const Text('Next'),
+                  ),
                 ),
               ],
             ),
