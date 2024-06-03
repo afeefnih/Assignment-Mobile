@@ -1,16 +1,22 @@
-# assignment1
+# Homestay Booking App
 
-A new Flutter project.
+Homestay Booking App is a web application that allows users to discover and book homestay accommodations. Users can register, log in, and manage their bookings. Administrators can view and manage user registrations and bookings.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- User registration and authentication
+- User profile management
+- Booking form submission
+- Viewing and updating booking details
+- Administrator panel for user and booking management
 
-A few resources to get you started if this is your first Flutter project:
+## Installation
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+To run the Homestay Booking App locally, follow these steps:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Clone the repository:
+
+```bash
+git clone https://github.com/afeefnih/Assignment-Mobile.git
+
+or use https://desktop.github.com/
