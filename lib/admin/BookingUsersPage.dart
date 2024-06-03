@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../db/database_helper.dart';
+import '../views/booking_update.dart';
 
 class BookingUsersPage extends StatefulWidget {
   @override
@@ -13,6 +14,49 @@ class _BookingUsersPageState extends State<BookingUsersPage> {
   void initState() {
     super.initState();
     _loadBookings();
+  }
+
+  void _editBooking(int index) {
+    // Navigate to the EditBookingPage for editing the booking details
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BookingUpdatePage(
+          bookingDetails: _bookings[index],
+          isAdmin: true,
+        ),
+      ),
+    ).then((value) => _loadBookings());
+  }
+
+  void _deleteBooking(int index) async {
+    // Create a mutable copy of the bookings list
+    List<Map<String, dynamic>> mutableBookings = List.from(_bookings);
+
+    // Get the booking ID to be deleted
+    int bookingId = _bookings[index]['bookid'];
+
+    // Delete the booking from the database
+    DatabaseHelper db = DatabaseHelper.instance;
+    int deletedRows = await db.deleteBooking(bookingId);
+
+    if (deletedRows > 0) {
+      // Show snackbar with a message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Booking deleted successfully'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+
+      // Remove the booking from the mutable list
+      mutableBookings.removeAt(index);
+
+      // Update the state with the modified list
+      setState(() {
+        _bookings = mutableBookings;
+      });
+    }
   }
 
   void _loadBookings() async {
@@ -102,13 +146,13 @@ class _BookingUsersPageState extends State<BookingUsersPage> {
                           IconButton(
                             icon: Icon(Icons.edit),
                             onPressed: () {
-                              //_editUser(index);
+                              _editBooking(index);
                             },
                           ),
                           IconButton(
                             icon: Icon(Icons.delete),
                             onPressed: () {
-                              //_deleteUser(index);
+                              _deleteBooking(index);
                             },
                           ),
                         ],
