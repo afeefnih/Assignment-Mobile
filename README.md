@@ -23,6 +23,6 @@ or use https://desktop.github.com/
 
 ## Screenshot
 
-![alt text](flutter_01.png)
-![alt text](flutter_02.png)
-![alt text](flutter_03.png)
+<img src="flutter_01.png" alt="Alt text" width="300">
+<img src="flutter_02.png" alt="Alt text" width="300">
+<img src="flutter_03.png" alt="Alt text" width="300">
