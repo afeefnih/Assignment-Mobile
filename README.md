@@ -1,6 +1,6 @@
 # Homestay Booking App
 
-Homestay Booking App is a web application that allows users to discover and book homestay accommodations. Users can register, log in, and manage their bookings. Administrators can view and manage user registrations and bookings.
+Homestay Booking App is a flutter application that allows users to discover and book homestay accommodations. Users can register, log in, and manage their bookings. Administrators can view and manage user registrations and bookings.
 
 ## Features
 
