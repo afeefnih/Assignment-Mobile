@@ -26,3 +26,15 @@ or use https://desktop.github.com/
 <img src="flutter_01.png" alt="Alt text" width="300">
 <img src="flutter_02.png" alt="Alt text" width="300">
 <img src="flutter_03.png" alt="Alt text" width="300">
+
+## Requirement
+
+| Check | Description |
+| --- | --- |
+|  | Users |
+| &#10004; | Page 1 (Non-registered user) <br> 1. Display the front page of the apps <br> 2. View the homestay packages <br> 3. Users are required to register (username and password) |
+| &#10004; | Page 2 (Registered user) <br> 1. Login (username and password) <br> 2. Update the user's profile (Name, email, phone, password) |
+| &#10004; | Page 3 (Registered user) <br> 1. Fill in the booking form (Can choose more than one homestay) |
+| &#10004; | Page 4 (Registered user) <br> 1. View booking date and time. <br> 2. View the check-in date, check-out date, homestay package, number of guests, and total price <br> 3. Update and delete the booking date, check-in/check-out date, homestay package and number of guests |
+|  | Administrator |
+| &#10004; | 1. Login (username and password) <br> 2. View all registered users (Name, homestay package, book date/time, check-in date, check-out date) <br> 3. Update and Delete registered users <br> 4. Logout |
