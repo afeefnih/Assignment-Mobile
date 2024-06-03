@@ -9,6 +9,7 @@ class DatabaseHelper {
   static const tableUsers = 'users';
   static const tableHomebook = 'homebook';
   static const tableAdmin = 'administrator';
+  static const tableRatings = 'ratings';
 
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
@@ -148,6 +149,23 @@ class DatabaseHelper {
         password TEXT NOT NULL
       )
     ''');
+
+    await db.insert(
+      tableAdmin,
+      {
+        'username': 'admin',
+        'password': '123',
+      },
+    );
+
+    await db.execute('''
+      CREATE TABLE $tableRatings (
+        reviewid INTEGER PRIMARY KEY,
+        homestayLabel TEXT NOT NULL,
+        rating DOUBLE NOT NULL,
+        review TEXT
+      )
+    ''');
   }
 
   Future<void> insertUser(Map<String, dynamic> user) async {
@@ -207,5 +225,51 @@ class DatabaseHelper {
       where: 'userid = ?',
       whereArgs: [userid],
     );
+  }
+
+  Future<int> insertRating(
+      String homestayLabel, double rating, String review) async {
+    final db = await database;
+    var result = await db.insert(
+      tableRatings,
+      {
+        'homestayLabel': homestayLabel,
+        'rating': rating,
+        'review': review,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    return result;
+  }
+
+  Future<List<Map<String, dynamic>>> getRatingsByHomestay(
+      String homestayLabel) async {
+    final db = await database;
+    var result = await db.query(
+      tableRatings,
+      where: 'homestayLabel = ?',
+      whereArgs: [homestayLabel],
+    );
+    return result;
+  }
+
+  Future<List<double>> getAverageRatingsForHomestays(
+      List<String> homestayLabels) async {
+    final db = await database;
+    List<double> averageRatings = [];
+
+    for (String label in homestayLabels) {
+      var result = await db.rawQuery(
+          'SELECT AVG(rating) as averageRating FROM $tableRatings WHERE homestayLabel = ?',
+          [label]);
+
+      if (result.isNotEmpty && result.first['averageRating'] != null) {
+        averageRatings.add(result.first['averageRating'] as double);
+      } else {
+        averageRatings.add(0); // or handle no ratings case appropriately
+      }
+    }
+
+    return averageRatings;
   }
 }

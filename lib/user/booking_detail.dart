@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import '../db/database_helper.dart';
 import '../models/booking.dart';
@@ -156,7 +155,7 @@ class _BookingDetailState extends State<BookingDetail> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => RatingAdd(id: widget.booking.id,),
+                        builder: (context) => RatingAdd(id: widget.booking.id, homestay: widget.booking.homestypackage,),
                       ),
                     );
                   },

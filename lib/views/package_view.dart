@@ -27,13 +27,48 @@ class PackageView extends StatelessWidget {
   }
 }
 
-class PackageContent extends StatelessWidget {
+class PackageContent extends StatefulWidget {
   final int? id;
   const PackageContent({Key? key, this.id}) : super(key: key);
 
+  @override
+  State<PackageContent> createState() => _PackageContentState();
+}
+
+class _PackageContentState extends State<PackageContent> {
+  List<double> _averageRatings = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadRating();
+  }
+
+  void _loadRating() async {
+    DatabaseHelper db = DatabaseHelper.instance;
+    List<String> homestayLabel =
+        Homestay.samples.map((homestay) => homestay.label).toList();
+
+    List<double> averageRatings =
+        await db.getAverageRatingsForHomestays(homestayLabel);
+    setState(() {
+      _averageRatings = averageRatings;
+    });
+  }
+
+  double rating(int n) {
+    double h;
+    if (_averageRatings.isNotEmpty && n < _averageRatings.length) {
+      h = _averageRatings[n];
+    } else {
+      h = 0.0;
+    }
+    return h;
+  }
+
   Future<String> fetchUserName() async {
     DatabaseHelper dbHelper = DatabaseHelper.instance;
-    Map<String, dynamic>? user = await dbHelper.getUserById(id!);
+    Map<String, dynamic>? user = await dbHelper.getUserById(widget.id!);
 
     if (user != null && user.containsKey('name')) {
       return user['name'];
@@ -71,7 +106,7 @@ class PackageContent extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 20),
-                (id != null)
+                (widget.id != null)
                     ? Card(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),
@@ -88,7 +123,9 @@ class PackageContent extends StatelessWidget {
                                     final userName = snapshot.data ?? 'User';
                                     return Text(
                                       'Welcome, $userName!',
-                                      style: Theme.of(context).textTheme.titleLarge,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge,
                                     );
                                   },
                                 ),
@@ -111,7 +148,8 @@ class PackageContent extends StatelessWidget {
                           Homestay.samples[index],
                         );
                       },
-                      child: buildHomestayCard(Homestay.samples[index]),
+                      child: buildHomestayCard(
+                          Homestay.samples[index], rating(index)),
                     );
                   },
                 ),
@@ -123,7 +161,7 @@ class PackageContent extends StatelessWidget {
     );
   }
 
-  Widget buildHomestayCard(Homestay homestay) {
+  Widget buildHomestayCard(Homestay homestay, double rating) {
     return Card(
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -141,10 +179,30 @@ class PackageContent extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(30, 13, 30, 15),
-            child: Text(
-              homestay.label,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            padding: const EdgeInsets.fromLTRB(20, 13, 18, 15),
+            child: Row(
+              children: [
+                Text(
+                  homestay.label,
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const Spacer(),
+                Row(
+                  children: [
+                    Text(
+                      rating.toStringAsFixed(1),
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const Icon(
+                      Icons.star,
+                      color: Color.fromARGB(255, 255, 157, 0),
+                      size: 16,
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ],
@@ -189,13 +247,13 @@ class PackageContent extends StatelessWidget {
           actions: [
             ElevatedButton(
               onPressed: () {
-                if (id != null) {
+                if (widget.id != null) {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => BookingForm(
-                        id: id!,
+                        id: widget.id!,
                         homestay: homestay,
                       ),
                     ),
