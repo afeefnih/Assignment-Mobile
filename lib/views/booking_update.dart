@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import '../db/database_helper.dart';
 import '../models/booking.dart';
 import 'package:intl/intl.dart';
@@ -5,11 +7,11 @@ import 'package:flutter/material.dart';
 import '../models/homestay.dart';
 
 class BookingUpdatePage extends StatefulWidget {
-  final int id;
+  final bool? isAdmin;
   final Map<String, dynamic> bookingDetails;
 
   const BookingUpdatePage(
-      {Key? key, required this.id, required this.bookingDetails})
+      {Key? key, required this.bookingDetails, this.isAdmin})
       : super(key: key);
 
   @override
@@ -22,14 +24,17 @@ class _BookingUpdatePageState extends State<BookingUpdatePage> {
   late TextEditingController _checkInDateController;
   late TextEditingController _checkOutDateController;
   late TextEditingController _numGuestController;
+  final TextEditingController _disController = TextEditingController();
   Homestay? _selectedHomestay;
   late double price;
+  double discount = 0;
 
   void updatePackagePrice() {
     _booking.packageprice = calculateTotal(
         price,
         calculateNumberOfDays(_booking.checkindate, _booking.checkoutdate),
         _booking.numguest);
+    _booking.packageprice -= discount;
   }
 
   Future<void> _updateBooking() async {
@@ -292,7 +297,7 @@ class _BookingUpdatePageState extends State<BookingUpdatePage> {
                 controller: _numGuestController,
                 decoration: InputDecoration(
                   hintText: 'Number of Guests',
-                  prefixIcon: Icon(Icons.people), // Add icon here
+                  prefixIcon: Icon(Icons.people),
                 ),
                 keyboardType: TextInputType.number,
                 onChanged: (value) {
@@ -304,6 +309,36 @@ class _BookingUpdatePageState extends State<BookingUpdatePage> {
                   });
                 },
               ),
+              if (widget.isAdmin ?? false)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10),
+                    const Text('Add Discount (RM)'),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: _disController,
+                      decoration: const InputDecoration(
+                        labelText: 'RM 0.00',
+                        prefixIcon: Icon(Icons.local_offer),
+                        prefixText: 'RM ',
+                      ),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'^\d+\.?\d{0,2}')),
+                      ],
+                      onChanged: (value) {
+                        setState(() {
+                          if (value.isNotEmpty) {
+                            discount = double.parse(value);
+                            updatePackagePrice();
+                          }
+                        });
+                      },
+                    ),
+                  ],
+                ),
               SizedBox(height: 20),
               Container(
                 width: double.infinity,

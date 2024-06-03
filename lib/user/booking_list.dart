@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 
 import '../db/database_helper.dart';
 import 'package:flutter/material.dart';
-import 'booking_update.dart';
+import '../views/booking_update.dart';
 
 class BookingTab extends StatefulWidget {
   final int id;
@@ -38,7 +38,6 @@ class _BookingTabState extends State<BookingTab> {
       context,
       MaterialPageRoute(
         builder: (context) => BookingUpdatePage(
-          id: widget.id,
           bookingDetails: _bookings[index],
         ),
       ),
