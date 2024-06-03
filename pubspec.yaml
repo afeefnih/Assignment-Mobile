@@ -36,6 +36,7 @@ dependencies:
   sqflite: ^2.3.3+1
   path: ^1.8.0
   confetti: ^0.7.0
+  flutter_launcher_icons: "^0.13.1"
 
 dev_dependencies:
   flutter_test:
@@ -93,3 +94,9 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_launcher_icons:
+  image_path: "assets/ic_launcher.png"
+  android: true
+  adaptive_icon_background: "assets/ic_launcher_background.png"
+  adaptive_icon_foreground: "assets/ic_launcher_foreground.png"
+  adaptive_icon_monochrome: "assets/ic_launcher_monochrome.png"
