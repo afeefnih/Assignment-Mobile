@@ -18,5 +18,11 @@ To run the Homestay Booking App locally, follow these steps:
 
 ```bash
 git clone https://github.com/afeefnih/Assignment-Mobile.git
-
+```
 or use https://desktop.github.com/
+
+## Screenshot
+
+![alt text](flutter_01.png)
+![alt text](flutter_02.png)
+![alt text](flutter_03.png)
